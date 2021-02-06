@@ -1,0 +1,40 @@
+div.tile_map {
+  background-color: black;
+
+  display: table;
+
+  border-collapse: collapse;
+  border: 1px solid black;
+
+  div.row {
+    display: table-row;
+  }
+
+  div.tile {
+    width: 64px;
+    height: 64px;
+    display: table-cell;
+
+    border: 1px solid black;
+    border-collapse: collapse;
+
+    &.tile-clear {
+      background-color: green;
+      cursor: pointer;
+    }
+
+    &.tile-wall {
+      cursor: not-allowed;
+    }
+
+    div.entity {
+      width: 100%;
+      height: 100%;
+      display: block;
+
+      &.entity-player {
+        content: url("/images/cedric_bot.png");
+      }
+    }
+  }
+}
