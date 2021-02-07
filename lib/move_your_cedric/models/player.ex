@@ -14,8 +14,7 @@ defmodule MoveYourCedric.Models.Player do
       position: nil,
       status: :idle,
       target: nil,
-      path: nil,
-      completed: true
+      path: nil
     }
     {:ok, state}
   end
@@ -219,7 +218,8 @@ defmodule MoveYourCedric.Models.Player do
         Astar.cost_to_enter(current.position, neighbor.position) +
         Astar.manhattan_distance(neighbor.position, state.target)
       end)
-      |> Enum.min()
+      # Avoid a weird crash when no route's available... Probably a wrong fix.
+      |> Enum.min(fn -> 0 end)
 
     IO.puts("Calculated shortest path available")
 
@@ -243,7 +243,7 @@ defmodule MoveYourCedric.Models.Player do
           }
 
           if not neighbor_in_open_list do
-          node
+            node
           else
             nil
           end
