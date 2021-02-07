@@ -90,7 +90,6 @@ defmodule MoveYourCedric.Models.Player do
         %{state.path | final_path: build_final_path(
           closed_list,
           state.position,
-          state.target,
           closed_list |> List.last(),
           [])}
 
@@ -143,7 +142,6 @@ defmodule MoveYourCedric.Models.Player do
         %{state.path | final_path: build_final_path(
           closed_list,
           state.position,
-          state.target,
           closed_list |> List.last(),
           [])}
 
@@ -258,29 +256,19 @@ defmodule MoveYourCedric.Models.Player do
     %{state.path | open_list: open_list ++ to_add}
   end
 
-  defp build_final_path(_closed_list, [ox, oy], _target, %{parent: [ox, oy]} = _current, final_path) do
+  defp build_final_path(_closed_list, [ox, oy], %{parent: [ox, oy]} = _current, final_path) do
     Logger.debug("[PLAYER] Finished!")
     final_path
   end
 
-  defp build_final_path(closed_list, origin, target, current, path) do
+  defp build_final_path(closed_list, origin, current, path) do
     Logger.debug("[PLAYER] Building: #{inspect current}")
-
-    # Dummy node target, to have a full path.
-    node_target =
-      %Astar.Node{
-        position: target,
-        f: nil,
-        g: Astar.cost_to_enter(current.position, target),
-        h: 0,
-        parent: nil
-      }
 
     parent =
       closed_list
         |> Enum.filter(fn node -> node.position == current.parent end)
         |> List.first()
 
-    [parent] ++ build_final_path(closed_list, origin, target, parent, path ++ [current, node_target])
+    [parent] ++ build_final_path(closed_list, origin, parent, path ++ [current])
   end
 end
