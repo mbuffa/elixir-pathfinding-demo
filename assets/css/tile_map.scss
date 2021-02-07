@@ -33,9 +33,11 @@ div.tile_map {
     height: 64px;
     display: table-cell;
 
-    outline: 1px solid lightgrey;
-    outline-offset: -1px;
+    border: 1px solid black;
+    // outline-offset: -1px;
     border-collapse: collapse;
+
+    text-align: center;
 
     img, div {
       height: 64px;
@@ -43,12 +45,26 @@ div.tile_map {
       position: absolute;
     }
 
+    img {
+      position: static;
+    }
+
     .tile-position {
       background-color: black;
       color: white;
 
-      // FIXME
-      // display: none;
+      // justify-self: center;
+      // align-self: center;
+      display: inline-block;
+      position: absolute;
+      width: 30px;
+      margin-left: -15px;
+      // margin: auto;
+      // padding: 1px;
+      z-index: 10;
+
+      font-size: 8px;
+      text-align: center;
     }
 
     &.tile-clear {
@@ -56,7 +72,7 @@ div.tile_map {
       cursor: pointer;
     }
 
-    &.tile-wall {
+    & div.tile-wall {
       background-color: brown;
       cursor: not-allowed;
     }
