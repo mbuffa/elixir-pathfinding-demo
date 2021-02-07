@@ -240,7 +240,7 @@ defmodule MoveYourCedric.Models.Player do
     IO.puts("Closed list: #{ inspect closed_list }")
 
     neighbors =
-      Astar.neighbors_of(current.position, tiles)
+      Astar.neighbors_of(tiles, current.position)
       |> Enum.reject(fn neighbor ->
         in_closed_list =
           closed_list
