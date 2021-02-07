@@ -38,6 +38,9 @@ defmodule MoveYourCedricWeb.MapLive do
                 phx-value-position-x="<%= tile.position |> List.first %>"
                 phx-value-position-y="<%= tile.position |> List.last %>"
               >
+                <span class="tile-position">
+                  <%= display_tile_position(tile.position) %>
+                </span>
                 <%= cond do %>
                   <% tile_has_player?(@player_position, tile.position) -> %>
                     <div class="entity entity-player">
@@ -73,7 +76,7 @@ defmodule MoveYourCedricWeb.MapLive do
                         </span>
                       </div>
                     </div>
-                  <% Atom.to_string(tile.type) == :wall -> %>
+                  <% Atom.to_string(tile.type) == "wall" -> %>
                     <div class="tile-wall">&nbsp;</div>
                   <% true -> %>
                 <% end %>
@@ -166,6 +169,11 @@ defmodule MoveYourCedricWeb.MapLive do
   def phrasing_status(:idle), do: "counting gold pieces"
   def phrasing_status(:estimating), do: "calculating shortest path to go farm"
   def phrasing_status(:moving), do: "moving"
+
+  def display_tile_position(position) do
+    [x, y] = position
+    "#{x}; #{y}"
+  end
 
 
 
