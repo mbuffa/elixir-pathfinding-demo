@@ -14,9 +14,8 @@ defmodule MoveYourCedric.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: MoveYourCedric.PubSub},
       # Start the Endpoint (http/https)
-      MoveYourCedricWeb.Endpoint
-      # Start a worker by calling: MoveYourCedric.Worker.start_link(arg)
-      # {MoveYourCedric.Worker, arg}
+      MoveYourCedricWeb.Endpoint,
+      MoveYourCedric.Models.Player
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
