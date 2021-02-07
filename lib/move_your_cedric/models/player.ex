@@ -19,15 +19,51 @@ defmodule MoveYourCedric.Models.Player do
     {:ok, state}
   end
 
-  def handle_call(:get_status, _from, state) do
-    {:reply, state.status, state}
+  def update_path(tiles) do
+    GenServer.cast(__MODULE__, {:update_path, tiles})
+  end
+
+  def walk_path() do
+    GenServer.cast(__MODULE__, :walk_path)
+  end
+
+  def get_path() do
+    GenServer.call(__MODULE__, :get_path)
+  end
+
+  def get_position() do
+    GenServer.call(__MODULE__, :get_position)
+  end
+
+  def get_status() do
+    GenServer.call(__MODULE__, :get_status)
+  end
+
+  def get_target() do
+    GenServer.call(__MODULE__, :get_target)
+  end
+
+  def set_position(position) do
+    GenServer.cast(__MODULE__, {:set_position, position})
+  end
+
+  def pick_target(position) do
+    GenServer.cast(__MODULE__, {:pick_target, position})
+  end
+
+  def handle_call(:get_path, _from, state) do
+    {:reply, state.path, state}
   end
 
   def handle_call(:get_position, _from, state) do
     {:reply, state.position, state}
   end
 
-    def handle_call(:get_target, _from, state) do
+  def handle_call(:get_status, _from, state) do
+    {:reply, state.status, state}
+  end
+
+  def handle_call(:get_target, _from, state) do
     {:reply, state.target, state}
   end
 
@@ -174,11 +210,8 @@ defmodule MoveYourCedric.Models.Player do
   def handle_cast(:walk_path, %{path: %{final_path: []}} = state) do
     Logger.debug("[PLAYER] Reached destination.")
 
-    new_path =
-      %{state.path | final_path: nil}
-
     state =
-      %{state | path: new_path,
+      %{state | path: nil,
                 position: state.target,
                 status: :idle,
                 target: nil}
@@ -198,34 +231,6 @@ defmodule MoveYourCedric.Models.Player do
                 status: :moving}
 
     {:noreply, state}
-  end
-
-  def update_path(tiles) do
-    GenServer.cast(__MODULE__, {:update_path, tiles})
-  end
-
-  def walk_path() do
-    GenServer.cast(__MODULE__, :walk_path)
-  end
-
-  def get_status() do
-    GenServer.call(__MODULE__, :get_status)
-  end
-
-  def get_position() do
-    GenServer.call(__MODULE__, :get_position)
-  end
-
-  def set_position(position) do
-    GenServer.cast(__MODULE__, {:set_position, position})
-  end
-
-  def get_target() do
-    GenServer.call(__MODULE__, :get_target)
-  end
-
-  def pick_target(position) do
-    GenServer.cast(__MODULE__, {:pick_target, position})
   end
 
   defp pick_target([tx, ty] = target, %{position: [tx, ty]} = state) do

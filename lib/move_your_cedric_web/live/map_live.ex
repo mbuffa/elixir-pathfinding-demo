@@ -12,21 +12,20 @@ defmodule MoveYourCedricWeb.MapLive do
     player = tile_map.entities |> Enum.find(fn entity -> entity.type == "player" end)
     Player.set_position(player.position)
 
-    socket = assign(socket, tile_map: tile_map)
+    socket = assign(socket,
+      tile_map: tile_map,
+      path: Player.get_path(),
+      player_position: Player.get_position(),
+      player_target: Player.get_target()
+    )
     {:ok, socket}
   end
 
   def render(assigns) do
+    IO.inspect assigns
+
     ~L"""
     <h1>Move Your Cédric</h1>
-
-    <ul class="entities-list">
-      <%= for entity <- @tile_map.entities do %>
-        <li>
-          <%= entity.name %> is at <%= entity.position |> List.first %> <%= entity.position |> List.last %> and is <%= phrasing_status(entity.status) %>
-        </li>
-      <% end %>
-    </ul>
 
     <div class="tilemap-container">
       <div class="tile_map">
@@ -39,14 +38,43 @@ defmodule MoveYourCedricWeb.MapLive do
                 phx-value-position-x="<%= tile.position |> List.first %>"
                 phx-value-position-y="<%= tile.position |> List.last %>"
               >
-
                 <%= cond do %>
-                  <% Enum.any?(@tile_map.entities, fn entity -> entity.type == "player" and entity.position == tile.position end) -> %>
+                  <% tile_has_player?(@player_position, tile.position) -> %>
                     <div class="entity entity-player">
                       <img class="cedric" src="/images/cedric_bot.png">
                     </div>
-                  <% Enum.any?(@tile_map.entities, fn entity -> entity.type == "player" and entity.target == tile.position end) -> %>
+                  <% tile_is_target?(@player_target, tile.position) -> %>
                     <div class="target">&nbsp;</div>
+                  <% tile_in_open_list?(@path, tile.position) -> %>
+                    <div class="open_list">
+                      <div class="info-container">
+                        <span class="span-g">
+                          <%= get_tile_node(@path.open_list, tile.position).g %>
+                        </span>
+                        <span class="span-h">
+                          <%= get_tile_node(@path.open_list, tile.position).h %>
+                        </span>
+                        <span class="span-f">
+                          <%= get_tile_node(@path.open_list, tile.position).f %>
+                        </span>
+                      </div>
+                    </div>
+                  <% tile_in_closed_list?(@path, tile.position) -> %>
+                    <div class="closed_list">
+                      <div class="info-container">
+                        <span class="span-g">
+                          <%= get_tile_node(@path.closed_list, tile.position).g %>
+                        </span>
+                        <span class="span-h">
+                          <%= get_tile_node(@path.closed_list, tile.position).h %>
+                        </span>
+                        <span class="span-f">
+                          <%= get_tile_node(@path.closed_list, tile.position).f %>
+                        </span>
+                      </div>
+                    </div>
+                  <% Atom.to_string(tile.type) == :wall -> %>
+                    <div class="tile-wall">&nbsp;</div>
                   <% true -> %>
                 <% end %>
               </div>
@@ -56,17 +84,30 @@ defmodule MoveYourCedricWeb.MapLive do
       </div>
 
       <div class="toolbar">
+        <img class="morpheus" src="/images/morpheus.jpg">
         <button phx-click="update-path">Find the path</button>
         <button phx-click="walk-path">Walk the path</button>
+
+        <ul class="entities-list">
+          <%= for entity <- @tile_map.entities do %>
+            <li>
+              <%= entity.name %> is at <%= entity.position |> List.first %> <%= entity.position |> List.last %> and is <%= phrasing_status(entity.status) %>
+            </li>
+          <% end %>
+        </ul>
       </div>
-    </main>
+    </div>
     """
   end
 
   def handle_event("update-path", _metadata, socket) do
     Player.update_path(socket.assigns.tile_map.tiles)
 
-    {:noreply, update(socket, :tile_map, &update_map(&1))}
+    socket = update(socket, :tile_map, &update_map(&1))
+    socket = assign(socket, :path, Player.get_path())
+    socket = assign(socket, :player_position, Player.get_position())
+
+    {:noreply, socket}
   end
 
   def handle_event("click-tile", %{"position-x" => x, "position-y" => y}, socket) do
@@ -82,14 +123,23 @@ defmodule MoveYourCedricWeb.MapLive do
     else
       :ok = Player.pick_target(position)
 
-      {:noreply, update(socket, :tile_map, &update_map(&1))}
+      socket = update(socket, :tile_map, &update_map(&1))
+      socket = assign(socket, :path, Player.get_path())
+      socket = assign(socket, :player_target, Player.get_target())
+
+      {:noreply, socket}
     end
   end
 
   def handle_event("walk-path", _metadata, socket) do
     Player.walk_path()
 
-    {:noreply, update(socket, :tile_map, &update_map(&1))}
+    socket = update(socket, :tile_map, &update_map(&1))
+    socket = assign(socket, :path, Player.get_path())
+    socket = assign(socket, :player_position, Player.get_position())
+    socket = assign(socket, :player_target, Player.get_target())
+
+    {:noreply, socket}
   end
 
   defp update_map(tile_map) do
@@ -116,4 +166,32 @@ defmodule MoveYourCedricWeb.MapLive do
   def phrasing_status(:idle), do: "counting gold pieces"
   def phrasing_status(:estimating), do: "calculating shortest path to go farm"
   def phrasing_status(:moving), do: "moving"
+
+
+
+  def get_tile_node(list, position) do
+    list |> Enum.find(fn node -> position == node.position end)
+  end
+
+
+  def tile_has_player?([x, y], [x, y]), do: true
+  def tile_has_player?(_, _), do: false
+
+  def tile_is_target?(nil, _), do: false
+  def tile_is_target?([x, y], [x, y]), do: true
+  def tile_is_target?(_, _), do: false
+
+  def tile_in_open_list?(nil, _), do: false
+  def tile_in_open_list?(%{open_list: nil}, _), do: false
+  def tile_in_open_list?(%{open_list: []}, _), do: false
+  def tile_in_open_list?(%{open_list: open_list}, position) do
+    open_list |> Enum.any?(fn node -> node.position == position end)
+  end
+
+  def tile_in_closed_list?(nil, _), do: false
+  def tile_in_closed_list?(%{closed_list: nil}, _), do: false
+  def tile_in_closed_list?(%{closed_list: []}, _), do: false
+  def tile_in_closed_list?(%{closed_list: closed_list}, position) do
+    closed_list |> Enum.any?(fn node -> node.position == position end)
+  end
 end
