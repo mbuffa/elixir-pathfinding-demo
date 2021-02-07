@@ -95,9 +95,7 @@ defmodule MoveYourCedric.Models.Player do
       IO.puts "Final path"
       IO.inspect path_with_final.final_path
 
-      {:noreply, %{state | path: path_with_final,
-                           status: :idle,
-                           target: nil}}
+      {:noreply, %{state | path: path_with_final}}
     else
       state = %{state | path: compute_path(current, tiles, state)}
 
@@ -147,9 +145,7 @@ defmodule MoveYourCedric.Models.Player do
       IO.puts "Final path"
       IO.inspect path_with_final.final_path
 
-      {:noreply, %{state | path: path_with_final,
-                           status: :idle,
-                           target: nil}}
+      {:noreply, %{state | path: path_with_final}}
     else
       state = %{state | path: compute_path(current, tiles, %{state | path: new_path})}
 
@@ -165,8 +161,51 @@ defmodule MoveYourCedric.Models.Player do
     {:noreply, state}
   end
 
+  def handle_cast(:walk_path, %{path: nil} = state) do
+    Logger.debug("[PLAYER] Aye aye aye, pick a target first.")
+    {:noreply, state}
+  end
+
+  def handle_cast(:walk_path, %{path: %{final_path: nil}} = state) do
+    Logger.debug("[PLAYER] Aye aye aye, pick a target first.")
+    {:noreply, state}
+  end
+
+  def handle_cast(:walk_path, %{path: %{final_path: []}} = state) do
+    Logger.debug("[PLAYER] Reached destination.")
+
+    new_path =
+      %{state.path | final_path: nil}
+
+    state =
+      %{state | path: new_path,
+                position: state.target,
+                status: :idle,
+                target: nil}
+
+    {:noreply, state}
+  end
+
+  def handle_cast(:walk_path, %{path: %{final_path: [head | tail]}} = state) do
+    Logger.debug("[PLAYER] Walking the path, received #{inspect head} and #{inspect tail}.")
+
+    new_path =
+      %{state.path | final_path: tail}
+
+    state =
+      %{state | path: new_path,
+                position: head.position,
+                status: :moving}
+
+    {:noreply, state}
+  end
+
   def update_path(tiles) do
     GenServer.cast(__MODULE__, {:update_path, tiles})
+  end
+
+  def walk_path() do
+    GenServer.cast(__MODULE__, :walk_path)
   end
 
   def get_status() do
@@ -269,6 +308,6 @@ defmodule MoveYourCedric.Models.Player do
         |> Enum.filter(fn node -> node.position == current.parent end)
         |> List.first()
 
-    [parent] ++ build_final_path(closed_list, origin, parent, path ++ [current])
+    build_final_path(closed_list, origin, parent, [parent, current] ++ path)
   end
 end
