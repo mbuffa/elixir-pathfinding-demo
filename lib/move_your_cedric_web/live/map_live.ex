@@ -56,7 +56,8 @@ defmodule MoveYourCedricWeb.MapLive do
       </div>
 
       <div class="toolbar">
-        <button phx-click="update-path">Proceed</button>
+        <button phx-click="update-path">Find the path</button>
+        <button phx-click="walk-path">Walk the path</button>
       </div>
     </main>
     """
@@ -85,6 +86,12 @@ defmodule MoveYourCedricWeb.MapLive do
     end
   end
 
+  def handle_event("walk-path", _metadata, socket) do
+    Player.walk_path()
+
+    {:noreply, update(socket, :tile_map, &update_map(&1))}
+  end
+
   defp update_map(tile_map) do
     updated_entities =
       tile_map.entities
@@ -106,6 +113,7 @@ defmodule MoveYourCedricWeb.MapLive do
     tile_map
   end
 
-  def phrasing_status(:idle), do: "counting turnips"
-  def phrasing_status(:estimating), do: "calculating shortest path"
+  def phrasing_status(:idle), do: "counting gold pieces"
+  def phrasing_status(:estimating), do: "calculating shortest path to go farm"
+  def phrasing_status(:moving), do: "moving"
 end
