@@ -41,11 +41,17 @@ defmodule MoveYourCedric.Models.TileMap do
 
   defp build_entities(_width, _height) do
     [
-      %Entity{
-        type: "player",
-        name: "Cédric",
-        position: [1, 2]
-      }
+      scaffold_player()
     ]
+  end
+
+  defp scaffold_player() do
+    %Entity{
+      type: "player",
+      name: "Cédric",
+      position: [1, 2],
+      status: MoveYourCedric.Models.Player.get_status(),
+      target: MoveYourCedric.Models.Player.get_target()
+    }
   end
 end

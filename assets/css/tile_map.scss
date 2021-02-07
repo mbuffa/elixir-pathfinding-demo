@@ -1,10 +1,23 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+div.tilemap-container {
+  display: flex;
+
+  & div.tile_map {
+  }
+
+  & div.toolbar {
+  }
+}
+
 div.tile_map {
   background-color: black;
 
   display: table;
-
-  border-collapse: collapse;
-  border: 1px solid black;
+  table-layout: fixed;;
 
   div.row {
     display: table-row;
@@ -15,25 +28,46 @@ div.tile_map {
     height: 64px;
     display: table-cell;
 
-    border: 1px solid black;
+    border: 1px solid lightgrey;
     border-collapse: collapse;
 
+    img, div {
+      height: 64px;
+      width: 64px;
+      position: absolute;
+    }
+
+    .tile-position {
+      background-color: black;
+      color: white;
+
+      // FIXME
+      display: none;
+    }
+
     &.tile-clear {
-      background-color: green;
+      background-color: #c2b280;
       cursor: pointer;
     }
 
     &.tile-wall {
+      background-color: brown;
       cursor: not-allowed;
     }
 
-    div.entity {
-      width: 100%;
-      height: 100%;
-      display: block;
+    div.entity, div.target {
+      width: 64px;
+      height: 64px;
+      // display: inline-block;
+    }
 
+    div.target {
+      background-color: black;
+    }
+
+    div.entity {
       &.entity-player {
-        content: url("/images/cedric_bot.png");
+
       }
     }
   }
