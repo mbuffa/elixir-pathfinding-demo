@@ -1,4 +1,4 @@
-defmodule MoveYourCedric.Models.Pathfinder do
+defmodule MoveYourCedric.Workers.Pathfinder do
   use GenServer
 
   require Logger

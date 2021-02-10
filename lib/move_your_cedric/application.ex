@@ -15,7 +15,7 @@ defmodule MoveYourCedric.Application do
       {Phoenix.PubSub, name: MoveYourCedric.PubSub},
       # Start the Endpoint (http/https)
       MoveYourCedricWeb.Endpoint,
-      MoveYourCedric.Models.Pathfinder
+      MoveYourCedric.Workers.Pathfinder
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
