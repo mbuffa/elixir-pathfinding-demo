@@ -177,12 +177,16 @@ defmodule MoveYourCedric.Workers.Pathfinder do
     if state.target == current.position do
       Logger.debug("[PLAYER] Done.")
 
-      path_with_final =
-        %{state.path | final_path: build_final_path(
+      final_path =
+        build_final_path(
           closed_list,
           state.position,
           closed_list |> List.last(),
-          [])}
+          [])
+        |> Enum.uniq()
+
+      path_with_final =
+        %{state.path | final_path: final_path}
 
       IO.puts "Final path"
       IO.inspect path_with_final.final_path
