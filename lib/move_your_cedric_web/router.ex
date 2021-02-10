@@ -18,6 +18,7 @@ defmodule MoveYourCedricWeb.Router do
     pipe_through :browser
 
     live "/", MapLive
+    live "/complex", ComplexMapLive
   end
 
   # Other scopes may use custom stacks.
