@@ -3,11 +3,11 @@ defmodule MoveYourCedricWeb.MapLive do
 
   require Logger
 
-  alias MoveYourCedric.Models.TileMap
-  alias MoveYourCedric.Models.Pathfinder
+  alias MoveYourCedric.Workers.Pathfinder
+  alias MoveYourCedric.Workers.SmallMapGenerator
 
   def mount(_params, _session, socket) do
-    tile_map = TileMap.build()
+    tile_map = SmallMapGenerator.build()
 
     player = tile_map.entities |> Enum.find(fn entity -> entity.type == "player" end)
     Pathfinder.set_position(player.position)
