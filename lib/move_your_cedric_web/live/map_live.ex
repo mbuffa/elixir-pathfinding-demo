@@ -4,26 +4,24 @@ defmodule MoveYourCedricWeb.MapLive do
   require Logger
 
   alias MoveYourCedric.Models.TileMap
-  alias MoveYourCedric.Models.Player
+  alias MoveYourCedric.Models.Pathfinder
 
   def mount(_params, _session, socket) do
     tile_map = TileMap.build()
 
     player = tile_map.entities |> Enum.find(fn entity -> entity.type == "player" end)
-    Player.set_position(player.position)
+    Pathfinder.set_position(player.position)
 
     socket = assign(socket,
       tile_map: tile_map,
-      path: Player.get_path(),
-      player_position: Player.get_position(),
-      player_target: Player.get_target()
+      path: Pathfinder.get_path(),
+      player_position: Pathfinder.get_position(),
+      player_target: Pathfinder.get_target()
     )
     {:ok, socket}
   end
 
   def render(assigns) do
-    IO.inspect assigns
-
     ~L"""
     <h1>Move Your Cédric</h1>
 
@@ -104,11 +102,11 @@ defmodule MoveYourCedricWeb.MapLive do
   end
 
   def handle_event("update-path", _metadata, socket) do
-    Player.update_path(socket.assigns.tile_map.tiles)
+    Pathfinder.update_path(socket.assigns.tile_map.tiles)
 
     socket = update(socket, :tile_map, &update_map(&1))
-    socket = assign(socket, :path, Player.get_path())
-    socket = assign(socket, :player_position, Player.get_position())
+    socket = assign(socket, :path, Pathfinder.get_path())
+    socket = assign(socket, :player_position, Pathfinder.get_position())
 
     {:noreply, socket}
   end
@@ -124,23 +122,23 @@ defmodule MoveYourCedricWeb.MapLive do
     if target.type == :wall do
       {:noreply, socket}
     else
-      :ok = Player.pick_target(position)
+      :ok = Pathfinder.pick_target(position)
 
       socket = update(socket, :tile_map, &update_map(&1))
-      socket = assign(socket, :path, Player.get_path())
-      socket = assign(socket, :player_target, Player.get_target())
+      socket = assign(socket, :path, Pathfinder.get_path())
+      socket = assign(socket, :player_target, Pathfinder.get_target())
 
       {:noreply, socket}
     end
   end
 
   def handle_event("walk-path", _metadata, socket) do
-    Player.walk_path()
+    Pathfinder.walk_path()
 
     socket = update(socket, :tile_map, &update_map(&1))
-    socket = assign(socket, :path, Player.get_path())
-    socket = assign(socket, :player_position, Player.get_position())
-    socket = assign(socket, :player_target, Player.get_target())
+    socket = assign(socket, :path, Pathfinder.get_path())
+    socket = assign(socket, :player_position, Pathfinder.get_position())
+    socket = assign(socket, :player_target, Pathfinder.get_target())
 
     {:noreply, socket}
   end
@@ -150,9 +148,9 @@ defmodule MoveYourCedricWeb.MapLive do
       tile_map.entities
       |> Enum.map(fn entity ->
         if entity.type == "player" do
-          %{entity | position: Player.get_position(),
-                     status: Player.get_status(),
-                     target: Player.get_target()
+          %{entity | position: Pathfinder.get_position(),
+                     status: Pathfinder.get_status(),
+                     target: Pathfinder.get_target()
           }
         else
           entity
