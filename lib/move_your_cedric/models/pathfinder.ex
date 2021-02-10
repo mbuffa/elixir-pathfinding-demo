@@ -1,4 +1,4 @@
-defmodule MoveYourCedric.Models.Player do
+defmodule MoveYourCedric.Models.Pathfinder do
   use GenServer
 
   require Logger
@@ -50,6 +50,11 @@ defmodule MoveYourCedric.Models.Player do
   def pick_target(position) do
     GenServer.cast(__MODULE__, {:pick_target, position})
   end
+
+
+
+
+
 
   def handle_call(:get_path, _from, state) do
     {:reply, state.path, state}
@@ -141,6 +146,7 @@ defmodule MoveYourCedric.Models.Player do
     end
   end
 
+  # Third handler: we have multiple nodes in our open list.
   def handle_cast({:update_path, tiles},
                   %{path: %{open_list: open_list, closed_list: closed_list}} = state) do
     current =
@@ -233,6 +239,11 @@ defmodule MoveYourCedric.Models.Player do
     {:noreply, state}
   end
 
+
+
+
+
+
   defp pick_target([tx, ty] = target, %{position: [tx, ty]} = state) do
     %{state | status: :idle, target: target, path: nil}
   end
@@ -241,9 +252,13 @@ defmodule MoveYourCedric.Models.Player do
     %{state | status: :estimating, target: target, path: nil}
   end
 
-  defp compute_path(current, tiles, %{path: %{closed_list: closed_list, open_list: open_list}} = state) do
-    IO.puts("Closed list: #{ inspect closed_list }")
 
+
+  defp compute_path(current, tiles, %{path: %{closed_list: closed_list, open_list: open_list}} = state) do
+    IO.puts("Closed list:")
+    IO.inspect closed_list
+
+    # We filter our neighbors: we don't want obstacles or nodes in closed_list.
     neighbors =
       Astar.neighbors_of(tiles, current.position)
       |> Enum.reject(fn neighbor ->
@@ -256,6 +271,7 @@ defmodule MoveYourCedric.Models.Player do
 
     IO.puts("Rejected invalid neighbors")
 
+    # Calculating best F available.
     shortest_path_available =
       neighbors
       |> Enum.map(fn neighbor ->
@@ -267,6 +283,7 @@ defmodule MoveYourCedric.Models.Player do
 
     IO.puts("Calculated shortest path available")
 
+    # Calculate nodes to add to our open list.
     to_add =
       Enum.map(neighbors, fn neighbor ->
         neighbor_in_open_list =
@@ -299,6 +316,8 @@ defmodule MoveYourCedric.Models.Player do
 
     %{state.path | open_list: open_list ++ to_add}
   end
+
+
 
   defp build_final_path(_closed_list, [ox, oy], %{parent: [ox, oy]} = _current, final_path) do
     Logger.debug("[PLAYER] Finished!")
