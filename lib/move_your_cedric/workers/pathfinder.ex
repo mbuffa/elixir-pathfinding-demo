@@ -318,9 +318,35 @@ defmodule MoveYourCedric.Workers.Pathfinder do
       end)
       |> Enum.reject(&is_nil/1)
 
+    # FIXME: We should be able to recompute all nodes cost_to_enter but not sure how to do that yet.
+
+    # # Refresh neighbors in the open list
+    # open_list =
+    #   open_list
+    #   |> Enum.map(fn node ->
+    #     if Astar.is_neighbor?(node.position, current.position) do
+    #       refresh_node_attractiveness(node, current.position)
+    #     else
+    #       node
+    #     end
+    #   end)
+
     %{state.path | open_list: open_list ++ to_add}
   end
 
+  defp refresh_node_attractiveness(node, current_position) do
+    g = Astar.cost_to_enter(current_position, node.position)
+    h = node.h
+    f = g + h
+
+    %Astar.Node{
+      position: node.position,
+      f: f,
+      g: g,
+      h: h,
+      parent: current_position
+    }
+  end
 
 
   defp build_final_path(_closed_list, [ox, oy], %{parent: [ox, oy]} = _current, final_path) do

@@ -47,4 +47,9 @@ defmodule MoveYourCedric.Astar do
       (diffx == 1 && diffy == 1) or (diffx == 1 && diffy == 0) or (diffy == 1 && diffx == 0)
     end)
   end
+
+  def is_neighbor?(node_position, target_position) do
+    distance = manhattan_distance(node_position, target_position)
+    distance == 1 or distance == 2
+  end
 end
