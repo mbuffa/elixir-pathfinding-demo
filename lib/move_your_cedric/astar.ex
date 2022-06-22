@@ -25,7 +25,8 @@ defmodule MoveYourCedric.Astar do
   def manhattan_distance(position, target) do
     [x, y] = position
     [tx, ty] = target
-    abs(x - tx) + abs(y - ty)
+    distance = abs(x - tx) + abs(y - ty)
+    distance * 10
   end
 
   def tile_at(tiles, position) do
