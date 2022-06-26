@@ -3,6 +3,8 @@ defmodule MoveYourCedric.Workers.SmallMapGenerator do
   alias MoveYourCedric.Models.Tile
   alias MoveYourCedric.Models.TileMap
 
+  @player_start_position [1, 2]
+
   defmodule Randomizer do
     defmodule Fake do
       def tile_type_from_coords(x, y) do
@@ -44,7 +46,7 @@ defmodule MoveYourCedric.Workers.SmallMapGenerator do
     %Entity{
       type: "player",
       name: "Cédric",
-      position: [1, 2],
+      position: @player_start_position,
       status: MoveYourCedric.Workers.Pathfinder.get_status(),
       target: MoveYourCedric.Workers.Pathfinder.get_target()
     }
