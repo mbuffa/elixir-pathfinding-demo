@@ -2,13 +2,11 @@ defmodule MoveYourCedric.Astar do
   require Logger
 
   defmodule Node do
-    defstruct [
-      position: nil,
-      f: nil,
-      g: nil,
-      h: nil,
-      parent: nil
-    ]
+    defstruct position: nil,
+              f: nil,
+              g: nil,
+              h: nil,
+              parent: nil
   end
 
   # G
@@ -54,7 +52,8 @@ defmodule MoveYourCedric.Astar do
   # Core algorithm
 
   # Final handler: We got nothing to do, we got our path.
-  def build_path(_tiles, %{path: %{final_path: final_path}} = state) when is_nil(final_path) == false do
+  def build_path(_tiles, %{path: %{final_path: final_path}} = state)
+      when is_nil(final_path) == false do
     Logger.debug("[ASTAR] Nothing to do, final path is already known.")
     state
   end
@@ -79,16 +78,14 @@ defmodule MoveYourCedric.Astar do
       final_path: nil
     }
 
-    %{state | path: path }
+    %{state | path: path}
   end
 
   # Second handler: We just got the initial node in our open list.
   def build_path(tiles, %{path: %{open_list: [current], closed_list: closed_list}} = state) do
-    path =
-      %{state.path | closed_list: closed_list ++ [current],
-                     open_list: []}
+    path = %{state.path | closed_list: closed_list ++ [current], open_list: []}
 
-    state = %{ state | path: path }
+    state = %{state | path: path}
 
     if state.target == current.position do
       Logger.info("[ASTAR] Reached destination")
@@ -105,7 +102,7 @@ defmodule MoveYourCedric.Astar do
     else
       state = %{state | path: compute_path(current, tiles, state)}
 
-      Logger.info("[ASTAR] Added nodes to the open list: #{ inspect state.path.open_list }")
+      Logger.info("[ASTAR] Added nodes to the open list: #{inspect(state.path.open_list)}")
 
       state
     end
@@ -116,7 +113,7 @@ defmodule MoveYourCedric.Astar do
     current =
       open_list
       |> Enum.sort_by(fn node -> {node.f, node.h} end, &<=/2)
-      |> List.first
+      |> List.first()
 
     new_open_list =
       open_list
@@ -124,12 +121,9 @@ defmodule MoveYourCedric.Astar do
 
     new_closed_list = closed_list ++ [current]
 
-    new_path =
-      %{state.path | open_list: new_open_list,
-                     closed_list: new_closed_list}
+    new_path = %{state.path | open_list: new_open_list, closed_list: new_closed_list}
 
-    state =
-      %{state | path: new_path}
+    state = %{state | path: new_path}
 
     if state.target == current.position do
       final_path =
@@ -149,9 +143,11 @@ defmodule MoveYourCedric.Astar do
     end
   end
 
-
-
-  defp compute_path(current, tiles, %{path: %{closed_list: closed_list, open_list: open_list}} = state) do
+  defp compute_path(
+         current,
+         tiles,
+         %{path: %{closed_list: closed_list, open_list: open_list}} = state
+       ) do
     # We filter our neighbors: we don't want obstacles or nodes in closed_list.
     neighbors =
       neighbors_of(tiles, current.position)
@@ -170,7 +166,7 @@ defmodule MoveYourCedric.Astar do
       neighbors
       |> Enum.map(fn neighbor ->
         cost_to_enter(current.position, neighbor.position) +
-        manhattan_distance(neighbor.position, state.target)
+          manhattan_distance(neighbor.position, state.target)
       end)
 
     Logger.info("[ASTAR] Calculated shortest path available")
@@ -215,12 +211,12 @@ defmodule MoveYourCedric.Astar do
   end
 
   defp build_final_path(closed_list, origin, current, path) do
-    Logger.debug("[PLAYER] Building: #{inspect current}")
+    Logger.debug("[PLAYER] Building: #{inspect(current)}")
 
     parent =
       closed_list
-        |> Enum.filter(fn node -> node.position == current.parent end)
-        |> List.first()
+      |> Enum.filter(fn node -> node.position == current.parent end)
+      |> List.first()
 
     build_final_path(closed_list, origin, parent, [parent, current] ++ path)
   end
