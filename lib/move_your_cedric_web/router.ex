@@ -19,7 +19,7 @@ defmodule MoveYourCedricWeb.Router do
 
     live "/placeholder", PageLive
     live "/", MapLive
-    live "/complex", ComplexMapLive
+    live "/?map=complex", MapLive
   end
 
   # Other scopes may use custom stacks.
