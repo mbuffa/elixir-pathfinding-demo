@@ -17,6 +17,7 @@ defmodule MoveYourCedricWeb.Router do
   scope "/", MoveYourCedricWeb do
     pipe_through :browser
 
+    live "/placeholder", PageLive
     live "/", MapLive
     live "/complex", ComplexMapLive
   end
