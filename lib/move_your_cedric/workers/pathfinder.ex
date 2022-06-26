@@ -69,13 +69,13 @@ defmodule MoveYourCedric.Workers.Pathfinder do
   end
 
   def handle_cast({:set_position, position}, state) do
-    Logger.debug("[PLAYER] Setting position to #{inspect(position)}")
+    Logger.info("[PATHFINDER] Setting position to #{inspect(position)}")
     {:noreply, %{state | position: position}}
   end
 
   def handle_cast({:pick_target, position}, state) do
     new_state = pick_target(position, state)
-    Logger.debug("[PLAYER] Setting target to #{inspect(new_state.target)}")
+    Logger.info("[PATHFINDER] Setting target to #{inspect(new_state.target)}")
     {:noreply, new_state}
   end
 
@@ -86,17 +86,17 @@ defmodule MoveYourCedric.Workers.Pathfinder do
   end
 
   def handle_cast(:walk_path, %{path: nil} = state) do
-    Logger.debug("[PLAYER] Aye aye aye, pick a target first.")
+    Logger.info("[PATHFINDER] Pick a target first.")
     {:noreply, state}
   end
 
   def handle_cast(:walk_path, %{path: %{final_path: nil}} = state) do
-    Logger.debug("[PLAYER] Aye aye aye, pick a target first.")
+    Logger.info("[PATHFINDER] Pick a target first.")
     {:noreply, state}
   end
 
   def handle_cast(:walk_path, %{path: %{final_path: []}} = state) do
-    Logger.debug("[PLAYER] Reached destination.")
+    Logger.info("[PATHFINDER] Reached destination.")
 
     state = %{state | path: nil, position: state.target, status: :idle, target: nil}
 
@@ -104,7 +104,7 @@ defmodule MoveYourCedric.Workers.Pathfinder do
   end
 
   def handle_cast(:walk_path, %{path: %{final_path: [head | tail]}} = state) do
-    Logger.debug("[PLAYER] Walking the path, received #{inspect(head)} and #{inspect(tail)}.")
+    Logger.info("[PATHFINDER] Walking the path, received #{inspect(head)} and #{inspect(tail)}.")
 
     new_path = %{state.path | final_path: tail}
 

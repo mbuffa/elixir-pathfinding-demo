@@ -54,13 +54,13 @@ defmodule MoveYourCedric.Astar do
   # Final handler: We got nothing to do, we got our path.
   def build_path(_tiles, %{path: %{final_path: final_path}} = state)
       when is_nil(final_path) == false do
-    Logger.debug("[ASTAR] Nothing to do, final path is already known.")
+    Logger.info("[ASTAR] Nothing to do, final path is already known.")
     state
   end
 
   # Initial handler: We haven't done anything yet.
   def build_path(_tiles, %{path: nil} = state) do
-    Logger.debug("[PLAYER] Adding starting node to the list.")
+    Logger.info("[ASTAR] Adding starting node to the list.")
 
     distance = manhattan_distance(state.position, state.target)
 
