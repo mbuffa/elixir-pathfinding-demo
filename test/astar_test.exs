@@ -4,8 +4,12 @@ defmodule MoveYourCedric.AstarTest do
   alias MoveYourCedric.Workers.Pathfinder
   alias MoveYourCedric.Workers.SmallMapGenerator
 
+  setup do
+    :ok = Application.ensure_started(:move_your_cedric)
+  end
+
   describe "algorithm" do
-    test "simple assertions" do
+    test "path building and walking that path" do
       path_updates = [
         %{
           closed_list: [],
@@ -194,6 +198,7 @@ defmodule MoveYourCedric.AstarTest do
             %MoveYourCedric.Astar.Node{f: 14, g: 14, h: 0, parent: [5, 2], position: [6, 1]}
           ],
           final_path: [
+            %MoveYourCedric.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
             %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
             %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]},
             %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [3, 2], position: [4, 3]},
@@ -232,6 +237,7 @@ defmodule MoveYourCedric.AstarTest do
             %MoveYourCedric.Astar.Node{f: 14, g: 14, h: 0, parent: [5, 2], position: [6, 1]}
           ],
           final_path: [
+            %MoveYourCedric.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
             %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
             %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]},
             %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [3, 2], position: [4, 3]},
@@ -262,6 +268,13 @@ defmodule MoveYourCedric.AstarTest do
 
       final_path = [
         %MoveYourCedric.Astar.Node{
+          f: 60,
+          g: 0,
+          h: 60,
+          parent: [1, 2],
+          position: [1, 2]
+        },
+        %MoveYourCedric.Astar.Node{
           f: 54,
           g: 14,
           h: 40,
@@ -291,8 +304,6 @@ defmodule MoveYourCedric.AstarTest do
         },
         %MoveYourCedric.Astar.Node{f: 14, g: 14, h: 0, parent: [5, 2], position: [6, 1]}
       ]
-
-      Application.ensure_started(:move_your_cedric)
 
       tile_map = SmallMapGenerator.build()
 
@@ -349,6 +360,7 @@ defmodule MoveYourCedric.AstarTest do
 
       # "Moving" to the initial node.
       :ok = Pathfinder.walk_path()
+      :ok = Pathfinder.walk_path()
 
       :ok = Pathfinder.walk_path()
       assert Pathfinder.get_position() == [3, 2]
@@ -358,6 +370,52 @@ defmodule MoveYourCedric.AstarTest do
       assert Pathfinder.get_position() == [5, 2]
       :ok = Pathfinder.walk_path()
       assert Pathfinder.get_position() == [6, 1]
+    end
+
+    test "short movements" do
+      tile_map = SmallMapGenerator.build()
+
+      player = tile_map.entities |> Enum.find(fn entity -> entity.type == "player" end)
+      Pathfinder.set_position(player.position)
+
+      target_position = [3, 4]
+      :ok = Pathfinder.pick_target(target_position)
+
+      assert Pathfinder.get_path() == nil
+      assert Pathfinder.get_target() == [3, 4]
+
+      :ok = Pathfinder.update_path(tile_map.tiles)
+      :ok = Pathfinder.update_path(tile_map.tiles)
+      :ok = Pathfinder.update_path(tile_map.tiles)
+      :ok = Pathfinder.update_path(tile_map.tiles)
+
+      expected_path = %{
+        closed_list: [
+          %MoveYourCedric.Astar.Node{f: 40, g: 0, h: 40, parent: [1, 2], position: [1, 2]},
+          %MoveYourCedric.Astar.Node{f: 34, g: 14, h: 20, parent: [1, 2], position: [2, 3]},
+          %MoveYourCedric.Astar.Node{f: 14, g: 14, h: 0, parent: [2, 3], position: [3, 4]}
+        ],
+        final_path: [
+          %MoveYourCedric.Astar.Node{f: 40, g: 0, h: 40, parent: [1, 2], position: [1, 2]},
+          %MoveYourCedric.Astar.Node{f: 34, g: 14, h: 20, parent: [1, 2], position: [2, 3]},
+          %MoveYourCedric.Astar.Node{f: 14, g: 14, h: 0, parent: [2, 3], position: [3, 4]}
+        ],
+        open_list: [
+          %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [0, 1]},
+          %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [1, 1]},
+          %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
+          %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [0, 2]},
+          %MoveYourCedric.Astar.Node{f: 40, g: 10, h: 30, parent: [1, 2], position: [2, 2]},
+          %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [0, 3]},
+          %MoveYourCedric.Astar.Node{f: 40, g: 10, h: 30, parent: [1, 2], position: [1, 3]},
+          %MoveYourCedric.Astar.Node{f: 34, g: 14, h: 20, parent: [2, 3], position: [3, 2]},
+          %MoveYourCedric.Astar.Node{f: 20, g: 10, h: 10, parent: [2, 3], position: [3, 3]},
+          %MoveYourCedric.Astar.Node{f: 34, g: 14, h: 20, parent: [2, 3], position: [1, 4]},
+          %MoveYourCedric.Astar.Node{f: 20, g: 10, h: 10, parent: [2, 3], position: [2, 4]}
+        ]
+      }
+
+      assert Pathfinder.get_path() == expected_path
     end
   end
 end
