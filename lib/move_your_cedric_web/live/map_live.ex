@@ -12,12 +12,14 @@ defmodule MoveYourCedricWeb.MapLive do
     player = tile_map.entities |> Enum.find(fn entity -> entity.type == "player" end)
     Pathfinder.set_position(player.position)
 
-    socket = assign(socket,
-      tile_map: tile_map,
-      path: Pathfinder.get_path(),
-      player_position: Pathfinder.get_position(),
-      player_target: Pathfinder.get_target()
-    )
+    socket =
+      assign(socket,
+        tile_map: tile_map,
+        path: Pathfinder.get_path(),
+        player_position: Pathfinder.get_position(),
+        player_target: Pathfinder.get_target()
+      )
+
     {:ok, socket}
   end
 
@@ -148,9 +150,11 @@ defmodule MoveYourCedricWeb.MapLive do
       tile_map.entities
       |> Enum.map(fn entity ->
         if entity.type == "player" do
-          %{entity | position: Pathfinder.get_position(),
-                     status: Pathfinder.get_status(),
-                     target: Pathfinder.get_target()
+          %{
+            entity
+            | position: Pathfinder.get_position(),
+              status: Pathfinder.get_status(),
+              target: Pathfinder.get_target()
           }
         else
           entity
@@ -173,12 +177,9 @@ defmodule MoveYourCedricWeb.MapLive do
     "#{x}; #{y}"
   end
 
-
-
   def get_tile_node(list, position) do
     list |> Enum.find(fn node -> position == node.position end)
   end
-
 
   def tile_has_player?([x, y], [x, y]), do: true
   def tile_has_player?(_, _), do: false
@@ -190,6 +191,7 @@ defmodule MoveYourCedricWeb.MapLive do
   def tile_in_open_list?(nil, _), do: false
   def tile_in_open_list?(%{open_list: nil}, _), do: false
   def tile_in_open_list?(%{open_list: []}, _), do: false
+
   def tile_in_open_list?(%{open_list: open_list}, position) do
     open_list |> Enum.any?(fn node -> node.position == position end)
   end
@@ -197,6 +199,7 @@ defmodule MoveYourCedricWeb.MapLive do
   def tile_in_closed_list?(nil, _), do: false
   def tile_in_closed_list?(%{closed_list: nil}, _), do: false
   def tile_in_closed_list?(%{closed_list: []}, _), do: false
+
   def tile_in_closed_list?(%{closed_list: closed_list}, position) do
     closed_list |> Enum.any?(fn node -> node.position == position end)
   end

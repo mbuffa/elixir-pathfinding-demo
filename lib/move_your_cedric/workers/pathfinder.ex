@@ -16,6 +16,7 @@ defmodule MoveYourCedric.Workers.Pathfinder do
       target: nil,
       path: nil
     }
+
     {:ok, state}
   end
 
@@ -51,11 +52,6 @@ defmodule MoveYourCedric.Workers.Pathfinder do
     GenServer.cast(__MODULE__, {:pick_target, position})
   end
 
-
-
-
-
-
   def handle_call(:get_path, _from, state) do
     {:reply, state.path, state}
   end
@@ -73,13 +69,13 @@ defmodule MoveYourCedric.Workers.Pathfinder do
   end
 
   def handle_cast({:set_position, position}, state) do
-    Logger.debug("[PLAYER] Setting position to #{ inspect position }")
+    Logger.debug("[PLAYER] Setting position to #{inspect(position)}")
     {:noreply, %{state | position: position}}
   end
 
   def handle_cast({:pick_target, position}, state) do
     new_state = pick_target(position, state)
-    Logger.debug("[PLAYER] Setting target to #{ inspect new_state.target }")
+    Logger.debug("[PLAYER] Setting target to #{inspect(new_state.target)}")
     {:noreply, new_state}
   end
 
@@ -102,30 +98,20 @@ defmodule MoveYourCedric.Workers.Pathfinder do
   def handle_cast(:walk_path, %{path: %{final_path: []}} = state) do
     Logger.debug("[PLAYER] Reached destination.")
 
-    state =
-      %{state | path: nil,
-                position: state.target,
-                status: :idle,
-                target: nil}
+    state = %{state | path: nil, position: state.target, status: :idle, target: nil}
 
     {:noreply, state}
   end
 
   def handle_cast(:walk_path, %{path: %{final_path: [head | tail]}} = state) do
-    Logger.debug("[PLAYER] Walking the path, received #{inspect head} and #{inspect tail}.")
+    Logger.debug("[PLAYER] Walking the path, received #{inspect(head)} and #{inspect(tail)}.")
 
-    new_path =
-      %{state.path | final_path: tail}
+    new_path = %{state.path | final_path: tail}
 
-    state =
-      %{state | path: new_path,
-                position: head.position,
-                status: :moving}
+    state = %{state | path: new_path, position: head.position, status: :moving}
 
     {:noreply, state}
   end
-
-
 
   defp pick_target([tx, ty] = target, %{position: [tx, ty]} = state) do
     %{state | status: :idle, target: target, path: nil}
