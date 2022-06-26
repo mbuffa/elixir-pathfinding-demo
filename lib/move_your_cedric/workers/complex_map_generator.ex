@@ -34,6 +34,8 @@ defmodule MoveYourCedric.Workers.ComplexMapGenerator do
     end
   end
 
+  @player_start_position [4, 9]
+
   def build(width \\ 8, height \\ 12) do
     %TileMap{
       size: [width, height],
@@ -63,7 +65,7 @@ defmodule MoveYourCedric.Workers.ComplexMapGenerator do
     %Entity{
       type: "player",
       name: "Cédric",
-      position: [4, 9],
+      position: @player_start_position,
       status: MoveYourCedric.Workers.Pathfinder.get_status(),
       target: MoveYourCedric.Workers.Pathfinder.get_target()
     }
