@@ -34,10 +34,25 @@ defmodule MoveYourCedricWeb.MapLive do
   end
 
   def render(assigns) do
+    # <img class="morpheus" src="/images/morpheus.jpg">
+
     ~L"""
-    <h1>Move Your Cédric</h1>
+    <h3>Move Your Cédric</h3>
 
     <div class="tilemap-container">
+      <div class="toolbar">
+        <button phx-click="update-path">Find the path</button>
+        <button phx-click="walk-path">Walk the path</button>
+      </div>
+
+      <ul class="entities-list">
+        <%= for entity <- @tile_map.entities do %>
+          <li>
+            <%= entity.name %> is at <%= entity.position |> List.first %> <%= entity.position |> List.last %> and is <%= phrasing_status(entity.status) %>
+          </li>
+        <% end %>
+      </ul>
+
       <div class="tile_map">
         <%= Enum.map(@tile_map.tiles, fn row -> %>
           <div class="row">
@@ -94,20 +109,6 @@ defmodule MoveYourCedricWeb.MapLive do
             <% end) %>
           </div>
         <% end) %>
-      </div>
-
-      <div class="toolbar">
-        <img class="morpheus" src="/images/morpheus.jpg">
-        <button phx-click="update-path">Find the path</button>
-        <button phx-click="walk-path">Walk the path</button>
-
-        <ul class="entities-list">
-          <%= for entity <- @tile_map.entities do %>
-            <li>
-              <%= entity.name %> is at <%= entity.position |> List.first %> <%= entity.position |> List.last %> and is <%= phrasing_status(entity.status) %>
-            </li>
-          <% end %>
-        </ul>
       </div>
     </div>
     """
