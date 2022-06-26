@@ -25,6 +25,8 @@ div.tile_map {
   table-layout: fixed;;
   width: fit-content;
 
+  padding: 0.5rem;
+
   div.row {
     display: table-row;
   }
@@ -34,9 +36,10 @@ div.tile_map {
     height: 64px;
     display: table-cell;
 
-    border: 1px solid black;
+    // border: 1px solid black;
     // outline-offset: -1px;
     border-collapse: collapse;
+    // box-sizing: border-box;
 
     text-align: center;
 
@@ -74,7 +77,7 @@ div.tile_map {
     }
 
     & div.tile-wall {
-      background-color: brown;
+      background-color: black;
       cursor: not-allowed;
     }
 
@@ -136,11 +139,6 @@ div.toolbar {
     padding: 0.5rem;
     font-size: 1.4em;
     cursor: pointer;
-  }
-
-  img.morpheus {
-    max-width: 300px;
-    margin: auto;
   }
 }
 

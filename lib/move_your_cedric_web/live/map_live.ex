@@ -14,7 +14,7 @@ defmodule MoveYourCedricWeb.MapLive do
 
     tile_map = case map_type do
       "small" ->
-        SmallMapGenerator.build()
+        SmallMapGenerator.build(12, 12)
       "complex" ->
         ComplexMapGenerator.build()
     end
@@ -34,10 +34,8 @@ defmodule MoveYourCedricWeb.MapLive do
   end
 
   def render(assigns) do
-    # <img class="morpheus" src="/images/morpheus.jpg">
-
     ~L"""
-    <h3>Move Your Cédric</h3>
+    <h3>A* Pathfinding LiveView demo</h3>
 
     <div class="tilemap-container">
       <div class="toolbar">
@@ -69,10 +67,12 @@ defmodule MoveYourCedricWeb.MapLive do
                 <%= cond do %>
                   <% tile_has_player?(@player_position, tile.position) -> %>
                     <div class="entity entity-player">
-                      <img class="cedric" src="/images/cedric_bot.png">
+                      <img class="character" src="/images/character.png">
                     </div>
                   <% tile_is_target?(@player_target, tile.position) -> %>
-                    <div class="target">&nbsp;</div>
+                    <div class="entity entity-player">
+                      <img class="target" src="/images/target.png">
+                    </div>
                   <% tile_in_open_list?(@path, tile.position) -> %>
                     <div class="open_list">
                       <div class="info-container">
@@ -179,13 +179,13 @@ defmodule MoveYourCedricWeb.MapLive do
     tile_map
   end
 
-  def phrasing_status(:idle), do: "counting gold pieces"
-  def phrasing_status(:estimating), do: "calculating shortest path to go farm"
+  def phrasing_status(:idle), do: "idle"
+  def phrasing_status(:estimating), do: "evaluating how to get there"
   def phrasing_status(:moving), do: "moving"
 
   def display_tile_position(position) do
     [x, y] = position
-    "#{x}; #{y}"
+    "(#{x}, #{y})"
   end
 
   def get_tile_node(list, position) do
