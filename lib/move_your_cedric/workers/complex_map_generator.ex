@@ -21,7 +21,7 @@ defmodule MoveYourCedric.Workers.ComplexMapGenerator do
         [6, 3],
         [6, 4],
         [6, 5],
-        [6, 6],
+        [6, 6]
       ]
 
       def tile_type_from_coords(x, y) do
