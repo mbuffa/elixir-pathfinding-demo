@@ -7,15 +7,15 @@ body {
   padding: 0;
 }
 
-h1 {
+h3 {
   margin: 1em;
   text-align: center;
 }
 
 div.tilemap-container {
   display: flex;
-  flex-flow: row nowrap;
-  width: 100%;
+  flex-flow: column wrap;
+  justify-content: baseline;
 }
 
 div.tile_map {
@@ -23,6 +23,7 @@ div.tile_map {
 
   display: table;
   table-layout: fixed;;
+  width: fit-content;
 
   div.row {
     display: table-row;
@@ -127,11 +128,12 @@ div.toolbar {
   flex: auto;
 
   display: flex;
-  flex-flow: column wrap;
-  justify-content: space-around;
+  flex-flow: row nowrap;
+  justify-content: left;
 
   button {
-    padding: 1em;
+    margin: 0.5rem;
+    padding: 0.5rem;
     font-size: 1.4em;
     cursor: pointer;
   }
