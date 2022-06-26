@@ -102,7 +102,7 @@ defmodule MoveYourCedric.Astar do
     else
       state = %{state | path: compute_path(current, tiles, state)}
 
-      Logger.info("[ASTAR] Added nodes to the open list: #{inspect(state.path.open_list)}")
+      Logger.info("[ASTAR] Added nodes to the open list.")
 
       state
     end
@@ -205,18 +205,16 @@ defmodule MoveYourCedric.Astar do
     %{state.path | open_list: open_list ++ to_add}
   end
 
-  defp build_final_path(_closed_list, [ox, oy], %{parent: [ox, oy]} = _current, final_path) do
-    Logger.debug("[PLAYER] Finished!")
+  defp build_final_path(closed_list, origin, current, path)
+  defp build_final_path(_closed_list, [ox, oy], %{position: [ox, oy]}, final_path) do
+    Logger.info("[ASTAR] Finished building final path")
     final_path
   end
 
   defp build_final_path(closed_list, origin, current, path) do
-    Logger.debug("[PLAYER] Building: #{inspect(current)}")
+    Logger.info("[ASTAR] Building final path")
 
-    parent =
-      closed_list
-      |> Enum.filter(fn node -> node.position == current.parent end)
-      |> List.first()
+    parent = Enum.find(closed_list, &(&1.position == current.parent))
 
     build_final_path(closed_list, origin, parent, [parent, current] ++ path)
   end
