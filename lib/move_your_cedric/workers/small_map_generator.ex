@@ -3,12 +3,54 @@ defmodule MoveYourCedric.Workers.SmallMapGenerator do
   alias MoveYourCedric.Models.Tile
   alias MoveYourCedric.Models.TileMap
 
-  @player_start_position [1, 2]
+  @player_start_position [2, 2]
 
   defmodule Randomizer do
     defmodule Fake do
+      @walls [
+        [2, 3],
+        [3, 3],
+        [4, 3],
+        [4, 2],
+        [4, 1],
+        [5, 1],
+        [4, 6],
+        [5, 0],
+        [0, 5],
+        [1, 5],
+        [2, 5],
+        [2, 6],
+        [4, 5],
+        [6, 5],
+        [6, 4],
+        [3, 6],
+        [3, 7],
+        [3, 8],
+        [5, 8],
+        [6, 7],
+        [7, 7],
+        [8, 7],
+        [8, 6],
+        [1, 9],
+        [2, 10],
+        [3, 11],
+        [6, 8],
+        [8, 4],
+        [8, 3],
+        [8, 2],
+        [8, 1],
+        [8, 0],
+        [8, 10],
+        [8, 9],
+        [9, 9],
+        [9, 8],
+        [9, 7],
+        [10, 1],
+        [11, 2]
+      ]
+
       def tile_type_from_coords(x, y) do
-        if x == 4 and y != 3 and y != 4 do
+        if Enum.any?(@walls, fn pos -> pos == [x, y] end) do
           :wall
         else
           :clear

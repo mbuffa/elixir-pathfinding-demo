@@ -14,7 +14,7 @@ defmodule MoveYourCedricWeb.MapLive do
 
     tile_map = case map_type do
       "small" ->
-        SmallMapGenerator.build()
+        SmallMapGenerator.build(12, 12)
       "complex" ->
         ComplexMapGenerator.build()
     end
