@@ -5,7 +5,7 @@
 # is restricted to this project.
 
 # General application configuration
-use Mix.Config
+import Config
 
 config :move_your_cedric,
   ecto_repos: [MoveYourCedric.Repo]
@@ -17,6 +17,19 @@ config :move_your_cedric, MoveYourCedricWeb.Endpoint,
   render_errors: [view: MoveYourCedricWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: MoveYourCedric.PubSub,
   live_view: [signing_salt: "2sC0cyKx"]
+
+# Configures the mailer
+#
+# By default it uses the "Local" adapter which stores the emails
+# locally. You can see the emails in your browser, at "/dev/mailbox".
+#
+# For production it's recommended to configure a different adapter
+# at the `config/runtime.exs`.
+config :move_your_cedric, MoveYourCedric.Mailer, adapter: Swoosh.Adapters.Local
+
+# Swoosh API client is needed for adapters other than SMTP.
+config :swoosh, :api_client, false
+
 
 # Configures Elixir's Logger
 config :logger, :console,
