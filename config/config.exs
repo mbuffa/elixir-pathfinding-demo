@@ -7,6 +7,9 @@
 # General application configuration
 import Config
 
+config :path_demo,
+  ecto_repos: []
+
 # config :path_demo,
 #   ecto_repos: [PathDemo.Repo]
 
