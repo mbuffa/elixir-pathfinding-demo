@@ -1,2 +1,2 @@
 ExUnit.start()
-Ecto.Adapters.SQL.Sandbox.mode(MoveYourCedric.Repo, :manual)
+Ecto.Adapters.SQL.Sandbox.mode(PathDemo.Repo, :manual)

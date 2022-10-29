@@ -1,4 +1,4 @@
-defmodule MoveYourCedricWeb.ConnCase do
+defmodule PathDemoWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -11,7 +11,7 @@ defmodule MoveYourCedricWeb.ConnCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use MoveYourCedricWeb.ConnCase, async: true`, although
+  by setting `use PathDemoWeb.ConnCase, async: true`, although
   this option is not recommended for other databases.
   """
 
@@ -22,20 +22,20 @@ defmodule MoveYourCedricWeb.ConnCase do
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
-      import MoveYourCedricWeb.ConnCase
+      import PathDemoWeb.ConnCase
 
-      alias MoveYourCedricWeb.Router.Helpers, as: Routes
+      alias PathDemoWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
-      @endpoint MoveYourCedricWeb.Endpoint
+      @endpoint PathDemoWeb.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(MoveYourCedric.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(PathDemo.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(MoveYourCedric.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(PathDemo.Repo, {:shared, self()})
     end
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}

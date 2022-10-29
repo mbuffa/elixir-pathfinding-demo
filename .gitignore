@@ -20,7 +20,7 @@ erl_crash.dump
 *.ez
 
 # Ignore package tarball (built via "mix hex.build").
-move_your_cedric-*.tar
+path_demo-*.tar
 
 
 # Ignore assets that are produced by build tools.

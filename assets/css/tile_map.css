@@ -29,6 +29,8 @@ div.tile_map div.tile {
   display: table-cell;
   border: 1px solid black;
   border-collapse: collapse;
+  border-left: none;
+  border-bottom: none;
   text-align: center;
 }
 div.tile_map div.tile img, div.tile_map div.tile div {
@@ -51,19 +53,37 @@ div.tile_map div.tile .tile-position {
   text-align: center;
 }
 div.tile_map div.tile.tile-clear {
-  background-color: white;
+  background-color: sandybrown;
   cursor: pointer;
 }
 div.tile_map div.tile div.tile-wall {
-  background-color: brown;
+  background-color: saddlebrown;
   cursor: not-allowed;
 }
 div.tile_map div.tile div.entity, div.tile_map div.tile div.target, div.tile_map div.tile div.open_list {
   width: 64px;
   height: 64px;
 }
+div.tile_map div.tile div.entity-player {
+  display: flex;
+  justify-content: space-around;
+}
+div.tile_map div.tile div.entity-player span {
+  margin: auto;
+}
 div.tile_map div.tile div.target {
-  background-color: black;
+  display: flex;
+  justify-content: space-around;
+}
+div.tile_map div.tile div.target span {
+  margin: auto;
+}
+div.tile_map div.tile div.path {
+  display: flex;
+  justify-content: space-around;
+}
+div.tile_map div.tile div.path span {
+  margin: auto;
 }
 div.tile_map div.tile div.open_list {
   background-color: lightblue;

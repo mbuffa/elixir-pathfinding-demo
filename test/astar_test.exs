@@ -1,11 +1,11 @@
-defmodule MoveYourCedric.AstarTest do
-  use MoveYourCedric.DataCase
+defmodule PathDemo.AstarTest do
+  use PathDemo.DataCase
 
-  alias MoveYourCedric.Workers.Pathfinder
-  alias MoveYourCedric.Workers.SmallMapGenerator
+  alias PathDemo.Workers.Pathfinder
+  alias PathDemo.Workers.SmallMapGenerator
 
   setup do
-    :ok = Application.ensure_started(:move_your_cedric)
+    :ok = Application.ensure_started(:path_demo)
   end
 
   describe "algorithm" do
@@ -15,7 +15,7 @@ defmodule MoveYourCedric.AstarTest do
           closed_list: [],
           final_path: nil,
           open_list: [
-            %MoveYourCedric.Astar.Node{
+            %PathDemo.Astar.Node{
               f: 60,
               g: 0,
               h: 60,
@@ -26,283 +26,283 @@ defmodule MoveYourCedric.AstarTest do
         },
         %{
           closed_list: [
-            %MoveYourCedric.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]}
+            %PathDemo.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]}
           ],
           final_path: nil,
           open_list: [
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [0, 1]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [1, 1]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
-            %MoveYourCedric.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [0, 2]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [2, 2]},
-            %MoveYourCedric.Astar.Node{f: 94, g: 14, h: 80, parent: [1, 2], position: [0, 3]},
-            %MoveYourCedric.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [1, 3]},
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [2, 3]}
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [0, 1]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [1, 1]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
+            %PathDemo.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [0, 2]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [2, 2]},
+            %PathDemo.Astar.Node{f: 94, g: 14, h: 80, parent: [1, 2], position: [0, 3]},
+            %PathDemo.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [1, 3]},
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [2, 3]}
           ]
         },
         %{
           closed_list: [
-            %MoveYourCedric.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]}
+            %PathDemo.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]}
           ],
           final_path: nil,
           open_list: [
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [0, 1]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [1, 1]},
-            %MoveYourCedric.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [0, 2]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [2, 2]},
-            %MoveYourCedric.Astar.Node{f: 94, g: 14, h: 80, parent: [1, 2], position: [0, 3]},
-            %MoveYourCedric.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [1, 3]},
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [2, 3]},
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [2, 1], position: [1, 0]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [2, 1], position: [2, 0]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 0]},
-            %MoveYourCedric.Astar.Node{f: 40, g: 10, h: 30, parent: [2, 1], position: [3, 1]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]}
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [0, 1]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [1, 1]},
+            %PathDemo.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [0, 2]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [2, 2]},
+            %PathDemo.Astar.Node{f: 94, g: 14, h: 80, parent: [1, 2], position: [0, 3]},
+            %PathDemo.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [1, 3]},
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [2, 3]},
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [2, 1], position: [1, 0]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [2, 1], position: [2, 0]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 0]},
+            %PathDemo.Astar.Node{f: 40, g: 10, h: 30, parent: [2, 1], position: [3, 1]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]}
           ]
         },
         %{
           closed_list: [
-            %MoveYourCedric.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
-            %MoveYourCedric.Astar.Node{f: 40, g: 10, h: 30, parent: [2, 1], position: [3, 1]}
+            %PathDemo.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
+            %PathDemo.Astar.Node{f: 40, g: 10, h: 30, parent: [2, 1], position: [3, 1]}
           ],
           final_path: nil,
           open_list: [
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [0, 1]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [1, 1]},
-            %MoveYourCedric.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [0, 2]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [2, 2]},
-            %MoveYourCedric.Astar.Node{f: 94, g: 14, h: 80, parent: [1, 2], position: [0, 3]},
-            %MoveYourCedric.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [1, 3]},
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [2, 3]},
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [2, 1], position: [1, 0]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [2, 1], position: [2, 0]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 0]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]}
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [0, 1]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [1, 1]},
+            %PathDemo.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [0, 2]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [2, 2]},
+            %PathDemo.Astar.Node{f: 94, g: 14, h: 80, parent: [1, 2], position: [0, 3]},
+            %PathDemo.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [1, 3]},
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [2, 3]},
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [2, 1], position: [1, 0]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [2, 1], position: [2, 0]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 0]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]}
           ]
         },
         %{
           closed_list: [
-            %MoveYourCedric.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
-            %MoveYourCedric.Astar.Node{f: 40, g: 10, h: 30, parent: [2, 1], position: [3, 1]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 0]}
+            %PathDemo.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
+            %PathDemo.Astar.Node{f: 40, g: 10, h: 30, parent: [2, 1], position: [3, 1]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 0]}
           ],
           final_path: nil,
           open_list: [
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [0, 1]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [1, 1]},
-            %MoveYourCedric.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [0, 2]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [2, 2]},
-            %MoveYourCedric.Astar.Node{f: 94, g: 14, h: 80, parent: [1, 2], position: [0, 3]},
-            %MoveYourCedric.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [1, 3]},
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [2, 3]},
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [2, 1], position: [1, 0]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [2, 1], position: [2, 0]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]}
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [0, 1]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [1, 1]},
+            %PathDemo.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [0, 2]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [2, 2]},
+            %PathDemo.Astar.Node{f: 94, g: 14, h: 80, parent: [1, 2], position: [0, 3]},
+            %PathDemo.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [1, 3]},
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [2, 3]},
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [2, 1], position: [1, 0]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [2, 1], position: [2, 0]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]}
           ]
         },
         %{
           closed_list: [
-            %MoveYourCedric.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
-            %MoveYourCedric.Astar.Node{f: 40, g: 10, h: 30, parent: [2, 1], position: [3, 1]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 0]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]}
+            %PathDemo.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
+            %PathDemo.Astar.Node{f: 40, g: 10, h: 30, parent: [2, 1], position: [3, 1]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 0]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]}
           ],
           final_path: nil,
           open_list: [
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [0, 1]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [1, 1]},
-            %MoveYourCedric.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [0, 2]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [2, 2]},
-            %MoveYourCedric.Astar.Node{f: 94, g: 14, h: 80, parent: [1, 2], position: [0, 3]},
-            %MoveYourCedric.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [1, 3]},
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [2, 3]},
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [2, 1], position: [1, 0]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [2, 1], position: [2, 0]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [3, 2], position: [3, 3]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [3, 2], position: [4, 3]}
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [0, 1]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [1, 1]},
+            %PathDemo.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [0, 2]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [2, 2]},
+            %PathDemo.Astar.Node{f: 94, g: 14, h: 80, parent: [1, 2], position: [0, 3]},
+            %PathDemo.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [1, 3]},
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [2, 3]},
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [2, 1], position: [1, 0]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [2, 1], position: [2, 0]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [3, 2], position: [3, 3]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [3, 2], position: [4, 3]}
           ]
         },
         %{
           closed_list: [
-            %MoveYourCedric.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
-            %MoveYourCedric.Astar.Node{f: 40, g: 10, h: 30, parent: [2, 1], position: [3, 1]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 0]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [3, 2], position: [4, 3]}
+            %PathDemo.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
+            %PathDemo.Astar.Node{f: 40, g: 10, h: 30, parent: [2, 1], position: [3, 1]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 0]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [3, 2], position: [4, 3]}
           ],
           final_path: nil,
           open_list: [
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [0, 1]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [1, 1]},
-            %MoveYourCedric.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [0, 2]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [2, 2]},
-            %MoveYourCedric.Astar.Node{f: 94, g: 14, h: 80, parent: [1, 2], position: [0, 3]},
-            %MoveYourCedric.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [1, 3]},
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [2, 3]},
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [2, 1], position: [1, 0]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [2, 1], position: [2, 0]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [3, 2], position: [3, 3]},
-            %MoveYourCedric.Astar.Node{f: 34, g: 14, h: 20, parent: [4, 3], position: [5, 2]},
-            %MoveYourCedric.Astar.Node{f: 40, g: 10, h: 30, parent: [4, 3], position: [5, 3]},
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [4, 3], position: [3, 4]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [4, 3], position: [4, 4]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [4, 3], position: [5, 4]}
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [0, 1]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [1, 1]},
+            %PathDemo.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [0, 2]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [2, 2]},
+            %PathDemo.Astar.Node{f: 94, g: 14, h: 80, parent: [1, 2], position: [0, 3]},
+            %PathDemo.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [1, 3]},
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [2, 3]},
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [2, 1], position: [1, 0]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [2, 1], position: [2, 0]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [3, 2], position: [3, 3]},
+            %PathDemo.Astar.Node{f: 34, g: 14, h: 20, parent: [4, 3], position: [5, 2]},
+            %PathDemo.Astar.Node{f: 40, g: 10, h: 30, parent: [4, 3], position: [5, 3]},
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [4, 3], position: [3, 4]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [4, 3], position: [4, 4]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [4, 3], position: [5, 4]}
           ]
         },
         %{
           closed_list: [
-            %MoveYourCedric.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
-            %MoveYourCedric.Astar.Node{f: 40, g: 10, h: 30, parent: [2, 1], position: [3, 1]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 0]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [3, 2], position: [4, 3]},
-            %MoveYourCedric.Astar.Node{f: 34, g: 14, h: 20, parent: [4, 3], position: [5, 2]}
+            %PathDemo.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
+            %PathDemo.Astar.Node{f: 40, g: 10, h: 30, parent: [2, 1], position: [3, 1]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 0]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [3, 2], position: [4, 3]},
+            %PathDemo.Astar.Node{f: 34, g: 14, h: 20, parent: [4, 3], position: [5, 2]}
           ],
           final_path: nil,
           open_list: [
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [0, 1]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [1, 1]},
-            %MoveYourCedric.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [0, 2]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [2, 2]},
-            %MoveYourCedric.Astar.Node{f: 94, g: 14, h: 80, parent: [1, 2], position: [0, 3]},
-            %MoveYourCedric.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [1, 3]},
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [2, 3]},
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [2, 1], position: [1, 0]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [2, 1], position: [2, 0]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [3, 2], position: [3, 3]},
-            %MoveYourCedric.Astar.Node{f: 40, g: 10, h: 30, parent: [4, 3], position: [5, 3]},
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [4, 3], position: [3, 4]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [4, 3], position: [4, 4]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [4, 3], position: [5, 4]},
-            %MoveYourCedric.Astar.Node{f: 20, g: 10, h: 10, parent: [5, 2], position: [5, 1]},
-            %MoveYourCedric.Astar.Node{f: 14, g: 14, h: 0, parent: [5, 2], position: [6, 1]},
-            %MoveYourCedric.Astar.Node{f: 20, g: 10, h: 10, parent: [5, 2], position: [6, 2]},
-            %MoveYourCedric.Astar.Node{f: 34, g: 14, h: 20, parent: [5, 2], position: [6, 3]}
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [0, 1]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [1, 1]},
+            %PathDemo.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [0, 2]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [2, 2]},
+            %PathDemo.Astar.Node{f: 94, g: 14, h: 80, parent: [1, 2], position: [0, 3]},
+            %PathDemo.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [1, 3]},
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [2, 3]},
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [2, 1], position: [1, 0]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [2, 1], position: [2, 0]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [3, 2], position: [3, 3]},
+            %PathDemo.Astar.Node{f: 40, g: 10, h: 30, parent: [4, 3], position: [5, 3]},
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [4, 3], position: [3, 4]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [4, 3], position: [4, 4]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [4, 3], position: [5, 4]},
+            %PathDemo.Astar.Node{f: 20, g: 10, h: 10, parent: [5, 2], position: [5, 1]},
+            %PathDemo.Astar.Node{f: 14, g: 14, h: 0, parent: [5, 2], position: [6, 1]},
+            %PathDemo.Astar.Node{f: 20, g: 10, h: 10, parent: [5, 2], position: [6, 2]},
+            %PathDemo.Astar.Node{f: 34, g: 14, h: 20, parent: [5, 2], position: [6, 3]}
           ]
         },
         %{
           closed_list: [
-            %MoveYourCedric.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
-            %MoveYourCedric.Astar.Node{f: 40, g: 10, h: 30, parent: [2, 1], position: [3, 1]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 0]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [3, 2], position: [4, 3]},
-            %MoveYourCedric.Astar.Node{f: 34, g: 14, h: 20, parent: [4, 3], position: [5, 2]},
-            %MoveYourCedric.Astar.Node{f: 14, g: 14, h: 0, parent: [5, 2], position: [6, 1]}
+            %PathDemo.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
+            %PathDemo.Astar.Node{f: 40, g: 10, h: 30, parent: [2, 1], position: [3, 1]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 0]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [3, 2], position: [4, 3]},
+            %PathDemo.Astar.Node{f: 34, g: 14, h: 20, parent: [4, 3], position: [5, 2]},
+            %PathDemo.Astar.Node{f: 14, g: 14, h: 0, parent: [5, 2], position: [6, 1]}
           ],
           final_path: [
-            %MoveYourCedric.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [3, 2], position: [4, 3]},
-            %MoveYourCedric.Astar.Node{f: 34, g: 14, h: 20, parent: [4, 3], position: [5, 2]},
-            %MoveYourCedric.Astar.Node{f: 14, g: 14, h: 0, parent: [5, 2], position: [6, 1]}
+            %PathDemo.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [3, 2], position: [4, 3]},
+            %PathDemo.Astar.Node{f: 34, g: 14, h: 20, parent: [4, 3], position: [5, 2]},
+            %PathDemo.Astar.Node{f: 14, g: 14, h: 0, parent: [5, 2], position: [6, 1]}
           ],
           open_list: [
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [0, 1]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [1, 1]},
-            %MoveYourCedric.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [0, 2]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [2, 2]},
-            %MoveYourCedric.Astar.Node{f: 94, g: 14, h: 80, parent: [1, 2], position: [0, 3]},
-            %MoveYourCedric.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [1, 3]},
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [2, 3]},
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [2, 1], position: [1, 0]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [2, 1], position: [2, 0]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [3, 2], position: [3, 3]},
-            %MoveYourCedric.Astar.Node{f: 40, g: 10, h: 30, parent: [4, 3], position: [5, 3]},
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [4, 3], position: [3, 4]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [4, 3], position: [4, 4]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [4, 3], position: [5, 4]},
-            %MoveYourCedric.Astar.Node{f: 20, g: 10, h: 10, parent: [5, 2], position: [5, 1]},
-            %MoveYourCedric.Astar.Node{f: 20, g: 10, h: 10, parent: [5, 2], position: [6, 2]},
-            %MoveYourCedric.Astar.Node{f: 34, g: 14, h: 20, parent: [5, 2], position: [6, 3]}
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [0, 1]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [1, 1]},
+            %PathDemo.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [0, 2]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [2, 2]},
+            %PathDemo.Astar.Node{f: 94, g: 14, h: 80, parent: [1, 2], position: [0, 3]},
+            %PathDemo.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [1, 3]},
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [2, 3]},
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [2, 1], position: [1, 0]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [2, 1], position: [2, 0]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [3, 2], position: [3, 3]},
+            %PathDemo.Astar.Node{f: 40, g: 10, h: 30, parent: [4, 3], position: [5, 3]},
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [4, 3], position: [3, 4]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [4, 3], position: [4, 4]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [4, 3], position: [5, 4]},
+            %PathDemo.Astar.Node{f: 20, g: 10, h: 10, parent: [5, 2], position: [5, 1]},
+            %PathDemo.Astar.Node{f: 20, g: 10, h: 10, parent: [5, 2], position: [6, 2]},
+            %PathDemo.Astar.Node{f: 34, g: 14, h: 20, parent: [5, 2], position: [6, 3]}
           ]
         },
         %{
           closed_list: [
-            %MoveYourCedric.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
-            %MoveYourCedric.Astar.Node{f: 40, g: 10, h: 30, parent: [2, 1], position: [3, 1]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 0]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [3, 2], position: [4, 3]},
-            %MoveYourCedric.Astar.Node{f: 34, g: 14, h: 20, parent: [4, 3], position: [5, 2]},
-            %MoveYourCedric.Astar.Node{f: 14, g: 14, h: 0, parent: [5, 2], position: [6, 1]}
+            %PathDemo.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
+            %PathDemo.Astar.Node{f: 40, g: 10, h: 30, parent: [2, 1], position: [3, 1]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 0]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [3, 2], position: [4, 3]},
+            %PathDemo.Astar.Node{f: 34, g: 14, h: 20, parent: [4, 3], position: [5, 2]},
+            %PathDemo.Astar.Node{f: 14, g: 14, h: 0, parent: [5, 2], position: [6, 1]}
           ],
           final_path: [
-            %MoveYourCedric.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [3, 2], position: [4, 3]},
-            %MoveYourCedric.Astar.Node{f: 34, g: 14, h: 20, parent: [4, 3], position: [5, 2]},
-            %MoveYourCedric.Astar.Node{f: 14, g: 14, h: 0, parent: [5, 2], position: [6, 1]}
+            %PathDemo.Astar.Node{f: 60, g: 0, h: 60, parent: [1, 2], position: [1, 2]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [2, 1], position: [3, 2]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [3, 2], position: [4, 3]},
+            %PathDemo.Astar.Node{f: 34, g: 14, h: 20, parent: [4, 3], position: [5, 2]},
+            %PathDemo.Astar.Node{f: 14, g: 14, h: 0, parent: [5, 2], position: [6, 1]}
           ],
           open_list: [
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [0, 1]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [1, 1]},
-            %MoveYourCedric.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [0, 2]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [2, 2]},
-            %MoveYourCedric.Astar.Node{f: 94, g: 14, h: 80, parent: [1, 2], position: [0, 3]},
-            %MoveYourCedric.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [1, 3]},
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [2, 3]},
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [2, 1], position: [1, 0]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [2, 1], position: [2, 0]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [3, 2], position: [3, 3]},
-            %MoveYourCedric.Astar.Node{f: 40, g: 10, h: 30, parent: [4, 3], position: [5, 3]},
-            %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [4, 3], position: [3, 4]},
-            %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [4, 3], position: [4, 4]},
-            %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [4, 3], position: [5, 4]},
-            %MoveYourCedric.Astar.Node{f: 20, g: 10, h: 10, parent: [5, 2], position: [5, 1]},
-            %MoveYourCedric.Astar.Node{f: 20, g: 10, h: 10, parent: [5, 2], position: [6, 2]},
-            %MoveYourCedric.Astar.Node{f: 34, g: 14, h: 20, parent: [5, 2], position: [6, 3]}
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [0, 1]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [1, 1]},
+            %PathDemo.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [0, 2]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [2, 2]},
+            %PathDemo.Astar.Node{f: 94, g: 14, h: 80, parent: [1, 2], position: [0, 3]},
+            %PathDemo.Astar.Node{f: 80, g: 10, h: 70, parent: [1, 2], position: [1, 3]},
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [2, 3]},
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [2, 1], position: [1, 0]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [2, 1], position: [2, 0]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [3, 2], position: [3, 3]},
+            %PathDemo.Astar.Node{f: 40, g: 10, h: 30, parent: [4, 3], position: [5, 3]},
+            %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [4, 3], position: [3, 4]},
+            %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [4, 3], position: [4, 4]},
+            %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [4, 3], position: [5, 4]},
+            %PathDemo.Astar.Node{f: 20, g: 10, h: 10, parent: [5, 2], position: [5, 1]},
+            %PathDemo.Astar.Node{f: 20, g: 10, h: 10, parent: [5, 2], position: [6, 2]},
+            %PathDemo.Astar.Node{f: 34, g: 14, h: 20, parent: [5, 2], position: [6, 3]}
           ]
         }
       ]
 
       final_path = [
-        %MoveYourCedric.Astar.Node{
+        %PathDemo.Astar.Node{
           f: 60,
           g: 0,
           h: 60,
           parent: [1, 2],
           position: [1, 2]
         },
-        %MoveYourCedric.Astar.Node{
+        %PathDemo.Astar.Node{
           f: 54,
           g: 14,
           h: 40,
           parent: [1, 2],
           position: [2, 1]
         },
-        %MoveYourCedric.Astar.Node{
+        %PathDemo.Astar.Node{
           f: 54,
           g: 14,
           h: 40,
           parent: [2, 1],
           position: [3, 2]
         },
-        %MoveYourCedric.Astar.Node{
+        %PathDemo.Astar.Node{
           f: 54,
           g: 14,
           h: 40,
           parent: [3, 2],
           position: [4, 3]
         },
-        %MoveYourCedric.Astar.Node{
+        %PathDemo.Astar.Node{
           f: 34,
           g: 14,
           h: 20,
           parent: [4, 3],
           position: [5, 2]
         },
-        %MoveYourCedric.Astar.Node{f: 14, g: 14, h: 0, parent: [5, 2], position: [6, 1]}
+        %PathDemo.Astar.Node{f: 14, g: 14, h: 0, parent: [5, 2], position: [6, 1]}
       ]
 
       tile_map = SmallMapGenerator.build()
@@ -391,27 +391,27 @@ defmodule MoveYourCedric.AstarTest do
 
       expected_path = %{
         closed_list: [
-          %MoveYourCedric.Astar.Node{f: 40, g: 0, h: 40, parent: [1, 2], position: [1, 2]},
-          %MoveYourCedric.Astar.Node{f: 34, g: 14, h: 20, parent: [1, 2], position: [2, 3]},
-          %MoveYourCedric.Astar.Node{f: 14, g: 14, h: 0, parent: [2, 3], position: [3, 4]}
+          %PathDemo.Astar.Node{f: 40, g: 0, h: 40, parent: [1, 2], position: [1, 2]},
+          %PathDemo.Astar.Node{f: 34, g: 14, h: 20, parent: [1, 2], position: [2, 3]},
+          %PathDemo.Astar.Node{f: 14, g: 14, h: 0, parent: [2, 3], position: [3, 4]}
         ],
         final_path: [
-          %MoveYourCedric.Astar.Node{f: 40, g: 0, h: 40, parent: [1, 2], position: [1, 2]},
-          %MoveYourCedric.Astar.Node{f: 34, g: 14, h: 20, parent: [1, 2], position: [2, 3]},
-          %MoveYourCedric.Astar.Node{f: 14, g: 14, h: 0, parent: [2, 3], position: [3, 4]}
+          %PathDemo.Astar.Node{f: 40, g: 0, h: 40, parent: [1, 2], position: [1, 2]},
+          %PathDemo.Astar.Node{f: 34, g: 14, h: 20, parent: [1, 2], position: [2, 3]},
+          %PathDemo.Astar.Node{f: 14, g: 14, h: 0, parent: [2, 3], position: [3, 4]}
         ],
         open_list: [
-          %MoveYourCedric.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [0, 1]},
-          %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [1, 1]},
-          %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
-          %MoveYourCedric.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [0, 2]},
-          %MoveYourCedric.Astar.Node{f: 40, g: 10, h: 30, parent: [1, 2], position: [2, 2]},
-          %MoveYourCedric.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [0, 3]},
-          %MoveYourCedric.Astar.Node{f: 40, g: 10, h: 30, parent: [1, 2], position: [1, 3]},
-          %MoveYourCedric.Astar.Node{f: 34, g: 14, h: 20, parent: [2, 3], position: [3, 2]},
-          %MoveYourCedric.Astar.Node{f: 20, g: 10, h: 10, parent: [2, 3], position: [3, 3]},
-          %MoveYourCedric.Astar.Node{f: 34, g: 14, h: 20, parent: [2, 3], position: [1, 4]},
-          %MoveYourCedric.Astar.Node{f: 20, g: 10, h: 10, parent: [2, 3], position: [2, 4]}
+          %PathDemo.Astar.Node{f: 74, g: 14, h: 60, parent: [1, 2], position: [0, 1]},
+          %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [1, 1]},
+          %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [2, 1]},
+          %PathDemo.Astar.Node{f: 60, g: 10, h: 50, parent: [1, 2], position: [0, 2]},
+          %PathDemo.Astar.Node{f: 40, g: 10, h: 30, parent: [1, 2], position: [2, 2]},
+          %PathDemo.Astar.Node{f: 54, g: 14, h: 40, parent: [1, 2], position: [0, 3]},
+          %PathDemo.Astar.Node{f: 40, g: 10, h: 30, parent: [1, 2], position: [1, 3]},
+          %PathDemo.Astar.Node{f: 34, g: 14, h: 20, parent: [2, 3], position: [3, 2]},
+          %PathDemo.Astar.Node{f: 20, g: 10, h: 10, parent: [2, 3], position: [3, 3]},
+          %PathDemo.Astar.Node{f: 34, g: 14, h: 20, parent: [2, 3], position: [1, 4]},
+          %PathDemo.Astar.Node{f: 20, g: 10, h: 10, parent: [2, 3], position: [2, 4]}
         ]
       }
 
