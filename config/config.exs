@@ -7,8 +7,8 @@
 # General application configuration
 import Config
 
-config :path_demo,
-  ecto_repos: [PathDemo.Repo]
+# config :path_demo,
+#   ecto_repos: [PathDemo.Repo]
 
 # Configures the endpoint
 config :path_demo, PathDemoWeb.Endpoint,

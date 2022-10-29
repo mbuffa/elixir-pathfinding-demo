@@ -54,13 +54,13 @@ defmodule PathDemo.Astar do
   # Final handler: We got nothing to do, we got our path.
   def build_path(_tiles, %{path: %{final_path: final_path}} = state)
       when is_nil(final_path) == false do
-    Logger.info("[ASTAR] Nothing to do, final path is already known.")
+    Logger.debug("[ASTAR] Nothing to do, final path is already known.")
     state
   end
 
   # Initial handler: We haven't done anything yet.
   def build_path(_tiles, %{path: nil} = state) do
-    Logger.info("[ASTAR] Adding starting node to the list.")
+    Logger.debug("[ASTAR] Adding starting node to the list.")
 
     distance = manhattan_distance(state.position, state.target)
 
@@ -88,7 +88,7 @@ defmodule PathDemo.Astar do
     state = %{state | path: path}
 
     if state.target == current.position do
-      Logger.info("[ASTAR] Reached destination")
+      Logger.debug("[ASTAR] Reached destination")
 
       final_path =
         build_final_path(
@@ -102,7 +102,7 @@ defmodule PathDemo.Astar do
     else
       state = %{state | path: compute_path(current, tiles, state)}
 
-      Logger.info("[ASTAR] Added nodes to the open list.")
+      Logger.debug("[ASTAR] Added nodes to the open list.")
 
       state
     end
@@ -159,7 +159,7 @@ defmodule PathDemo.Astar do
         neighbor.type != :clear or in_closed_list
       end)
 
-    Logger.info("[ASTAR] Rejected invalid neighbors")
+    Logger.debug("[ASTAR] Rejected invalid neighbors")
 
     # Calculating best F available.
     shortest_path_available =
@@ -169,7 +169,7 @@ defmodule PathDemo.Astar do
           manhattan_distance(neighbor.position, state.target)
       end)
 
-    Logger.info("[ASTAR] Calculated shortest path available")
+    Logger.debug("[ASTAR] Calculated shortest path available")
 
     # Calculate nodes to add to our open list.
     to_add =
@@ -207,12 +207,12 @@ defmodule PathDemo.Astar do
 
   defp build_final_path(closed_list, origin, current, path)
   defp build_final_path(_closed_list, [ox, oy], %{position: [ox, oy]}, final_path) do
-    Logger.info("[ASTAR] Finished building final path")
+    Logger.debug("[ASTAR] Finished building final path")
     final_path
   end
 
   defp build_final_path(closed_list, origin, current, path) do
-    Logger.info("[ASTAR] Building final path")
+    Logger.debug("[ASTAR] Building final path")
 
     parent = Enum.find(closed_list, &(&1.position == current.parent))
 

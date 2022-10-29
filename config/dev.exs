@@ -1,13 +1,13 @@
 import Config
 
 # Configure your database
-config :path_demo, PathDemo.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "path_demo_dev",
-  hostname: "localhost",
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+# config :path_demo, PathDemo.Repo,
+#   username: "postgres",
+#   password: "postgres",
+#   database: "path_demo_dev",
+#   hostname: "localhost",
+#   show_sensitive_data_on_connection_error: true,
+#   pool_size: 10
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -61,17 +61,6 @@ config :path_demo, PathDemoWeb.Endpoint,
 # If desired, both `http:` and `https:` keys can be
 # configured to run both http and https servers on
 # different ports.
-
-# Watch static and templates for browser reloading.
-config :path_demo, PathDemoWeb.Endpoint,
-  live_reload: [
-    patterns: [
-      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
-      ~r"priv/gettext/.*(po)$",
-      ~r"lib/path_demo_web/(live|views)/.*(ex)$",
-      ~r"lib/path_demo_web/templates/.*(eex)$"
-    ]
-  ]
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"

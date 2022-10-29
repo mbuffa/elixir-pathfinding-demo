@@ -18,21 +18,21 @@ defmodule PathDemo.DataCase do
 
   using do
     quote do
-      alias PathDemo.Repo
+      # alias PathDemo.Repo
 
-      import Ecto
-      import Ecto.Changeset
-      import Ecto.Query
+      # import Ecto
+      # import Ecto.Changeset
+      # import Ecto.Query
       import PathDemo.DataCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(PathDemo.Repo)
+    # :ok = Ecto.Adapters.SQL.Sandbox.checkout(PathDemo.Repo)
 
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(PathDemo.Repo, {:shared, self()})
-    end
+    # unless tags[:async] do
+    #   Ecto.Adapters.SQL.Sandbox.mode(PathDemo.Repo, {:shared, self()})
+    # end
 
     :ok
   end

@@ -1,5 +1,8 @@
 # PathDemo
 
+## Online Demo
+Head over to https://path-demo.fly.dev and enjoy!
+
 ## Context
 This is a live demonstration of the A* pathfinding algorithm implemented in Elixir using LiveView. The algorithm itself is a functional step-by-step version of the famous A* algorithm, which is most commonly used in video games.
 
