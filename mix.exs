@@ -5,7 +5,7 @@ defmodule PathDemo.MixProject do
     [
       app: :path_demo,
       version: "0.1.0",
-      elixir: "~> 1.7",
+      elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
       # compilers: Mix.compilers(),
       compilers: [:gettext] ++ Mix.compilers(),
