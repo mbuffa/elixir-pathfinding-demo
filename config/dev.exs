@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # Configure your database
 config :move_your_cedric, MoveYourCedric.Repo,
@@ -16,17 +16,25 @@ config :move_your_cedric, MoveYourCedric.Repo,
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
 config :move_your_cedric, MoveYourCedricWeb.Endpoint,
-  http: [port: 4000],
-  debug_errors: true,
-  code_reloader: true,
+  # Binding to loopback ipv4 address prevents access from other machines.
+  # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
+  http: [ip: {127, 0, 0, 1}, port: 4000],
   check_origin: false,
+  code_reloader: true,
+  debug_errors: true,
+  secret_key_base: "d9JA1DpE2A12dQ9OTnUebwAB6zJh1J+QMfvvcpYmpe+u8yG7c12EeTlS0/FV+a7L",
   watchers: [
-    node: [
-      "node_modules/webpack/bin/webpack.js",
-      "--mode",
-      "development",
-      "--watch-stdin",
-      cd: Path.expand("../assets", __DIR__)
+    # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+  ]
+
+config :move_your_cedric, MoveYourCedricWeb.Endpoint,
+  live_reload: [
+    patterns: [
+      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"priv/gettext/.*(po)$",
+      ~r"lib/move_your_cedric_web/(live|views)/.*(ex)$",
+      ~r"lib/move_your_cedric_web/templates/.*(eex)$"
     ]
   ]
 

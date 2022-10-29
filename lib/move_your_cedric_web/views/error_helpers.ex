@@ -12,7 +12,7 @@ defmodule MoveYourCedricWeb.ErrorHelpers do
     Enum.map(Keyword.get_values(form.errors, field), fn error ->
       content_tag(:span, translate_error(error),
         class: "invalid-feedback",
-        phx_feedback_for: input_id(form, field)
+        phx_feedback_for: input_name(form, field)
       )
     end)
   end
@@ -39,9 +39,9 @@ defmodule MoveYourCedricWeb.ErrorHelpers do
     # should be written to the errors.po file. The :count option is
     # set by Ecto and indicates we should also apply plural rules.
     if count = opts[:count] do
-      Gettext.dngettext(MoveYourCedricWeb.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(DemoWeb.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(MoveYourCedricWeb.Gettext, "errors", msg, opts)
+      Gettext.dgettext(DemoWeb.Gettext, "errors", msg, opts)
     end
   end
 end
