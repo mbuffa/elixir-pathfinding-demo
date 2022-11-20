@@ -66,8 +66,8 @@ defmodule PathDemo.Workers.ComplexMapGenerator do
       type: "player",
       name: "Robby",
       position: @player_start_position,
-      status: PathDemo.Workers.Pathfinder.get_status(),
-      target: PathDemo.Workers.Pathfinder.get_target()
+      status: :idle,
+      target: nil
     }
   end
 end

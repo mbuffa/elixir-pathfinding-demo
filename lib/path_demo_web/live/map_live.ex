@@ -5,11 +5,19 @@ defmodule PathDemoWeb.MapLive do
 
   alias PathDemo.Workers.{
     Pathfinder,
+    PathfinderSupervisor,
     SmallMapGenerator,
     ComplexMapGenerator
   }
 
+  defp worker_name(socket) do
+    PathfinderSupervisor.get_name(socket.id)
+  end
+
   def mount(params, _session, socket) do
+    worker_name = worker_name(socket)
+    PathfinderSupervisor.ensure_started(worker_name)
+
     map_type = Map.get(params, "map", "small")
 
     tile_map = case map_type do
@@ -20,14 +28,14 @@ defmodule PathDemoWeb.MapLive do
     end
 
     player = tile_map.entities |> Enum.find(fn entity -> entity.type == "player" end)
-    Pathfinder.set_position(player.position)
+    Pathfinder.set_position(worker_name, player.position)
 
     socket =
       assign(socket,
         tile_map: tile_map,
-        path: Pathfinder.get_path(),
-        player_position: Pathfinder.get_position(),
-        player_target: Pathfinder.get_target()
+        path: Pathfinder.get_path(worker_name),
+        player_position: Pathfinder.get_position(worker_name),
+        player_target: Pathfinder.get_target(worker_name)
       )
 
     {:ok, socket}
@@ -120,16 +128,18 @@ defmodule PathDemoWeb.MapLive do
   end
 
   def handle_event("update-path", _metadata, socket) do
-    Pathfinder.update_path(socket.assigns.tile_map.tiles)
+    worker_name = worker_name(socket)
+    Pathfinder.update_path(worker_name, socket.assigns.tile_map.tiles)
 
-    socket = update(socket, :tile_map, &update_map_entities(&1))
-    socket = assign(socket, :path, Pathfinder.get_path())
-    socket = assign(socket, :player_position, Pathfinder.get_position())
+    socket = update(socket, :tile_map, &update_map_entities(&1, worker_name))
+    socket = assign(socket, :path, Pathfinder.get_path(worker_name))
+    socket = assign(socket, :player_position, Pathfinder.get_position(worker_name))
 
     {:noreply, socket}
   end
 
   def handle_event("click-tile", %{"position-x" => x, "position-y" => y}, socket) do
+    worker_name = worker_name(socket)
     position = [x |> String.to_integer(), y |> String.to_integer()]
 
     target =
@@ -140,48 +150,45 @@ defmodule PathDemoWeb.MapLive do
     if target.type == :wall do
       {:noreply, socket}
     else
-      :ok = Pathfinder.pick_target(position)
+      :ok = Pathfinder.pick_target(worker_name, position)
 
-      socket = update(socket, :tile_map, &update_map_entities(&1))
-      socket = assign(socket, :path, Pathfinder.get_path())
-      socket = assign(socket, :player_target, Pathfinder.get_target())
+      socket = update(socket, :tile_map, &update_map_entities(&1, worker_name))
+      socket = assign(socket, :path, Pathfinder.get_path(worker_name))
+      socket = assign(socket, :player_target, Pathfinder.get_target(worker_name))
 
       {:noreply, socket}
     end
   end
 
   def handle_event("walk-path", _metadata, socket) do
-    Pathfinder.walk_path()
+    worker_name = worker_name(socket)
+    Pathfinder.walk_path(worker_name)
 
-    socket = update(socket, :tile_map, &update_map_entities(&1))
-    socket = assign(socket, :path, Pathfinder.get_path())
-    socket = assign(socket, :player_position, Pathfinder.get_position())
-    socket = assign(socket, :player_target, Pathfinder.get_target())
+    socket = update(socket, :tile_map, &update_map_entities(&1, worker_name))
+    socket = assign(socket, :path, Pathfinder.get_path(worker_name))
+    socket = assign(socket, :player_position, Pathfinder.get_position(worker_name))
+    socket = assign(socket, :player_target, Pathfinder.get_target(worker_name))
 
     {:noreply, socket}
   end
 
-  defp update_map_entities(tile_map) do
+  defp update_map_entities(tile_map, worker_name) do
     updated_entities =
       tile_map.entities
       |> Enum.map(fn entity ->
         if entity.type == "player" do
           %{
             entity
-            | position: Pathfinder.get_position(),
-              status: Pathfinder.get_status(),
-              target: Pathfinder.get_target()
+            | position: Pathfinder.get_position(worker_name),
+              status: Pathfinder.get_status(worker_name),
+              target: Pathfinder.get_target(worker_name)
           }
         else
           entity
         end
       end)
 
-    tile_map =
-      tile_map
-      |> Map.put(:entities, updated_entities)
-
-    tile_map
+    tile_map |> Map.put(:entities, updated_entities)
   end
 
   def phrasing_status(:idle), do: "idle"

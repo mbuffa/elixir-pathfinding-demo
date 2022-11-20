@@ -5,8 +5,9 @@ defmodule PathDemo.Workers.Pathfinder do
 
   alias PathDemo.Astar
 
-  def start_link(_) do
-    GenServer.start_link(__MODULE__, nil, name: __MODULE__)
+  def start_link(init) when is_list(init) do
+    name = Keyword.fetch!(init, :name)
+    GenServer.start_link(__MODULE__, nil, name: name)
   end
 
   def init(_) do
@@ -20,36 +21,36 @@ defmodule PathDemo.Workers.Pathfinder do
     {:ok, state}
   end
 
-  def update_path(tiles) do
-    GenServer.cast(__MODULE__, {:update_path, tiles})
+  def update_path(name, tiles) do
+    GenServer.cast(name, {:update_path, tiles})
   end
 
-  def walk_path() do
-    GenServer.cast(__MODULE__, :walk_path)
+  def walk_path(name) do
+    GenServer.cast(name, :walk_path)
   end
 
-  def get_path() do
-    GenServer.call(__MODULE__, :get_path)
+  def get_path(name) do
+    GenServer.call(name, :get_path)
   end
 
-  def get_position() do
-    GenServer.call(__MODULE__, :get_position)
+  def get_position(name) do
+    GenServer.call(name, :get_position)
   end
 
-  def get_status() do
-    GenServer.call(__MODULE__, :get_status)
+  def get_status(name) do
+    GenServer.call(name, :get_status)
   end
 
-  def get_target() do
-    GenServer.call(__MODULE__, :get_target)
+  def get_target(name) do
+    GenServer.call(name, :get_target)
   end
 
-  def set_position(position) do
-    GenServer.cast(__MODULE__, {:set_position, position})
+  def set_position(name, position) do
+    GenServer.cast(name, {:set_position, position})
   end
 
-  def pick_target(position) do
-    GenServer.cast(__MODULE__, {:pick_target, position})
+  def pick_target(name, position) do
+    GenServer.cast(name, {:pick_target, position})
   end
 
   def handle_call(:get_path, _from, state) do
@@ -74,7 +75,7 @@ defmodule PathDemo.Workers.Pathfinder do
   end
 
   def handle_cast({:pick_target, position}, state) do
-    new_state = pick_target(position, state)
+    new_state = do_pick_target(position, state)
     Logger.debug("[PATHFINDER] Setting target to #{inspect(new_state.target)}")
     {:noreply, new_state}
   end
@@ -113,11 +114,11 @@ defmodule PathDemo.Workers.Pathfinder do
     {:noreply, state}
   end
 
-  defp pick_target([tx, ty] = target, %{position: [tx, ty]} = state) do
+  defp do_pick_target([tx, ty] = target, %{position: [tx, ty]} = state) do
     %{state | status: :idle, target: target, path: nil}
   end
 
-  defp pick_target(target, state) do
+  defp do_pick_target(target, state) do
     %{state | status: :estimating, target: target, path: nil}
   end
 end

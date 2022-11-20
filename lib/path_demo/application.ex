@@ -15,7 +15,7 @@ defmodule PathDemo.Application do
       {Phoenix.PubSub, name: PathDemo.PubSub},
       # Start the Endpoint (http/https)
       PathDemoWeb.Endpoint,
-      PathDemo.Workers.Pathfinder
+      PathDemo.Workers.PathfinderSupervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
