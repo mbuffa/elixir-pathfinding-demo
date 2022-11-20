@@ -34,15 +34,14 @@ defmodule PathDemoWeb.MapLive do
   end
 
   def render(assigns) do
-    # <img class="morpheus" src="/images/morpheus.jpg">
-
     ~L"""
     <h3>Pathfinding A* Live Demo</h3>
 
     <div class="tilemap-container">
       <div class="toolbar">
-        <button phx-click="update-path">Find the path</button>
-        <button phx-click="walk-path">Walk the path</button>
+        <button phx-click="update-path" <%= update_disable(assigns)%>>Find the path</button>
+        <button phx-click="walk-path" <%= walk_disable(assigns) %>>Walk the path</button>
+        <p><%= if is_nil(assigns.player_target), do: "Pick a target!", else: "" %></p>
       </div>
 
       <ul class="entities-list">
@@ -225,4 +224,18 @@ defmodule PathDemoWeb.MapLive do
   def tile_in_closed_list?(%{closed_list: closed_list}, position) do
     closed_list |> Enum.any?(fn node -> node.position == position end)
   end
+
+  defp update_disable(%{path: %{final_path: final_path}, player_target: player_target} = _assigns) do
+    if is_nil(player_target) or not is_nil(final_path) do
+      "disabled"
+    else
+      ""
+    end
+  end
+  defp update_disable(%{player_target: nil}), do: "disabled"
+  defp update_disable(_), do: ""
+
+  defp walk_disable(%{path: %{final_path: nil}} = _assigns), do: "disabled"
+  defp walk_disable(%{path: nil} = _assigns), do: "disabled"
+  defp walk_disable(_), do: ""
 end

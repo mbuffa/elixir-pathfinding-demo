@@ -114,14 +114,12 @@ div.toolbar {
   justify-content: left;
 }
 div.toolbar button {
+  cursor: pointer;
+}
+div.toolbar * {
   margin: 0.5rem;
   padding: 0.5rem;
   font-size: 1.4em;
-  cursor: pointer;
-}
-div.toolbar img.morpheus {
-  max-width: 300px;
-  margin: auto;
 }
 ul.entities-list {
   background-color: black;
