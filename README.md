@@ -3,8 +3,6 @@ This is a live demonstration of the A* pathfinding algorithm implemented in Elix
 
 Head over to https://path-demo.fly.dev and enjoy!
 
-(It's not supposed to be multiplayer, and it's not instanced, so others might try to move the robot while you do so 😄)
-
 ## Context
 I hacked together the original version of this demo literally over a weekend, ingesting a lot of content about pathing, and a bit about LiveView, in order to do an internal talk at Pandascore.
 I got back to it and refactored the whole thing later to clean it up, so overall, I think this is a great demonstration of some of Elixir capabilities, and how to implement such an algorithm in a functional way, leveraging pattern matching quite extensively.
