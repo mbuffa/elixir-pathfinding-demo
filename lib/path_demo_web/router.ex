@@ -1,6 +1,8 @@
 defmodule PathDemoWeb.Router do
   use PathDemoWeb, :router
 
+  alias PathDemoWeb.Plugs.AllowIframe
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -8,6 +10,7 @@ defmodule PathDemoWeb.Router do
     plug :put_root_layout, {PathDemoWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug AllowIframe
   end
 
   pipeline :api do
