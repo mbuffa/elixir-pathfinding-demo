@@ -1,28 +1,38 @@
 body {
   font-family: sans-serif;
 }
+
 * {
   margin: 0;
   padding: 0;
 }
+
 h3 {
   margin: 1em;
   text-align: center;
 }
+
+.semi-transparent {
+  opacity: 0.5;
+}
+
 div.tilemap-container {
   display: flex;
   flex-flow: column wrap;
   justify-content: baseline;
 }
+
 div.tile_map {
   background-color: black;
   display: table;
   table-layout: fixed;
   width: min-content;
 }
+
 div.tile_map div.row {
   display: table-row;
 }
+
 div.tile_map div.tile {
   width: 64px;
   height: 64px;
@@ -33,14 +43,18 @@ div.tile_map div.tile {
   border-bottom: none;
   text-align: center;
 }
-div.tile_map div.tile img, div.tile_map div.tile div {
+
+div.tile_map div.tile img,
+div.tile_map div.tile div {
   height: 64px;
   width: 64px;
   position: absolute;
 }
+
 div.tile_map div.tile img {
   position: static;
 }
+
 div.tile_map div.tile .tile-position {
   background-color: black;
   color: white;
@@ -52,75 +66,97 @@ div.tile_map div.tile .tile-position {
   font-size: 8px;
   text-align: center;
 }
+
 div.tile_map div.tile.tile-clear {
   background-color: sandybrown;
   cursor: pointer;
 }
+
 div.tile_map div.tile div.tile-wall {
   background-color: saddlebrown;
   cursor: not-allowed;
 }
-div.tile_map div.tile div.entity, div.tile_map div.tile div.target, div.tile_map div.tile div.open_list {
+
+div.tile_map div.tile div.entity,
+div.tile_map div.tile div.target,
+div.tile_map div.tile div.open_list {
   width: 64px;
   height: 64px;
 }
+
 div.tile_map div.tile div.entity-player {
   display: flex;
   justify-content: space-around;
 }
+
 div.tile_map div.tile div.entity-player span {
   margin: auto;
 }
+
 div.tile_map div.tile div.target {
   display: flex;
   justify-content: space-around;
 }
+
 div.tile_map div.tile div.target span {
   margin: auto;
 }
+
 div.tile_map div.tile div.path {
+  background-color: white;
   display: flex;
   justify-content: space-around;
 }
+
 div.tile_map div.tile div.path span {
   margin: auto;
 }
+
 div.tile_map div.tile div.open_list {
   background-color: lightblue;
 }
+
 div.tile_map div.tile div.closed_list {
   background-color: orange;
 }
+
 div.tile_map div.tile div.info-container {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-evenly;
 }
+
 div.tile_map div.tile div.info-container span.span-g {
   width: 50%;
   text-align: left;
 }
+
 div.tile_map div.tile div.info-container span.span-h {
   width: 50%;
   text-align: right;
 }
+
 div.tile_map div.tile div.info-container span.span-f {
   font-size: 1.4em;
 }
+
 div.toolbar {
   flex: auto;
   display: flex;
   flex-flow: row nowrap;
   justify-content: left;
 }
+
 div.toolbar button {
   cursor: pointer;
 }
+
 div.toolbar * {
   margin: 0.5rem;
   padding: 0.5rem;
   font-size: 1.4em;
 }
+
 ul.entities-list {
   background-color: black;
   color: white;

@@ -20,12 +20,14 @@ defmodule PathDemoWeb.MapLive do
 
     map_type = Map.get(params, "map", "small")
 
-    tile_map = case map_type do
-      "small" ->
-        SmallMapGenerator.build(12, 12)
-      "complex" ->
-        ComplexMapGenerator.build()
-    end
+    tile_map =
+      case map_type do
+        "small" ->
+          SmallMapGenerator.build(12, 12)
+
+        "complex" ->
+          ComplexMapGenerator.build()
+      end
 
     player = tile_map.entities |> Enum.find(fn entity -> entity.type == "player" end)
     Pathfinder.set_position(worker_name, player.position)
@@ -74,14 +76,6 @@ defmodule PathDemoWeb.MapLive do
                   <%= display_tile_position(tile.position) %>
                 </span>
                 <%= cond do %>
-                  <% tile_has_player?(@player_position, tile.position) -> %>
-                    <div class="entity entity-player">
-                      <span>🤖</span>
-                    </div>
-                  <% tile_is_target?(@player_target, tile.position) -> %>
-                    <div class="target">
-                      <span>👀</span>
-                    </div>
                   <% tile_in_final_path?(@path, tile.position) -> %>
                     <div class="path">
                       <span>🦶</span>
@@ -101,7 +95,14 @@ defmodule PathDemoWeb.MapLive do
                       </div>
                     </div>
                   <% tile_in_closed_list?(@path, tile.position) -> %>
-                    <div class="closed_list">
+                    <%= cond do %>
+                        <% tile_has_player?(@player_position, tile.position) -> %>
+                          <div class="closed_list entity entity-player">
+                            <span>🤖</span>
+                        <% true -> %>
+                          <div class="closed_list">
+                      <% end %>
+
                       <div class="info-container">
                         <span class="span-g">
                           <%= get_tile_node(@path.closed_list, tile.position).g %>
@@ -116,6 +117,14 @@ defmodule PathDemoWeb.MapLive do
                     </div>
                   <% Atom.to_string(tile.type) == "wall" -> %>
                     <div class="tile-wall">&nbsp;</div>
+                    <% tile_has_player?(@player_position, tile.position) -> %>
+                    <div class="entity entity-player">
+                      <span>🤖</span>
+                    </div>
+                  <% tile_is_target?(@player_target, tile.position) -> %>
+                    <div class="target">
+                      <span>👀</span>
+                    </div>
                   <% true -> %>
                 <% end %>
               </div>
@@ -214,6 +223,7 @@ defmodule PathDemoWeb.MapLive do
   def tile_in_final_path?(nil, _), do: false
   def tile_in_final_path?(%{final_path: nil}, _), do: false
   def tile_in_final_path?(%{final_path: []}, _), do: false
+
   def tile_in_final_path?(%{final_path: final_path}, position) do
     final_path |> Enum.any?(fn node -> node.position == position end)
   end
@@ -221,6 +231,7 @@ defmodule PathDemoWeb.MapLive do
   def tile_in_open_list?(nil, _), do: false
   def tile_in_open_list?(%{open_list: nil}, _), do: false
   def tile_in_open_list?(%{open_list: []}, _), do: false
+
   def tile_in_open_list?(%{open_list: open_list}, position) do
     open_list |> Enum.any?(fn node -> node.position == position end)
   end
@@ -228,6 +239,7 @@ defmodule PathDemoWeb.MapLive do
   def tile_in_closed_list?(nil, _), do: false
   def tile_in_closed_list?(%{closed_list: nil}, _), do: false
   def tile_in_closed_list?(%{closed_list: []}, _), do: false
+
   def tile_in_closed_list?(%{closed_list: closed_list}, position) do
     closed_list |> Enum.any?(fn node -> node.position == position end)
   end
@@ -239,6 +251,7 @@ defmodule PathDemoWeb.MapLive do
       ""
     end
   end
+
   defp update_disable(%{player_target: nil}), do: "disabled"
   defp update_disable(_), do: ""
 
