@@ -7,9 +7,6 @@
 # General application configuration
 import Config
 
-# config :path_demo,
-#   ecto_repos: [PathDemo.Repo]
-
 # Configures the endpoint
 config :path_demo, PathDemoWeb.Endpoint,
   url: [host: "localhost"],
@@ -30,7 +27,6 @@ config :path_demo, PathDemo.Mailer, adapter: Swoosh.Adapters.Local
 # Swoosh API client is needed for adapters other than SMTP.
 config :swoosh, :api_client, false
 
-
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.14.29",
@@ -40,7 +36,6 @@ config :esbuild,
     cd: Path.expand("../assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
-
 
 # Configures Elixir's Logger
 config :logger, :console,

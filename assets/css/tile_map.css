@@ -68,12 +68,12 @@ div.tile_map div.tile .tile-position {
 }
 
 div.tile_map div.tile.tile-clear {
-  background-color: sandybrown;
+  background-color: white;
   cursor: pointer;
 }
 
 div.tile_map div.tile div.tile-wall {
-  background-color: saddlebrown;
+  background-color: black;
   cursor: not-allowed;
 }
 

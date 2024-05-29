@@ -1,5 +1,5 @@
 defmodule PathDemo.AstarTest do
-  use PathDemo.DataCase
+  use ExUnit.Case
 
   alias PathDemo.Workers.Pathfinder
   alias PathDemo.Workers.PathfinderSupervisor
@@ -15,17 +15,164 @@ defmodule PathDemo.AstarTest do
   describe "algorithm" do
     test "path building and walking that path", %{worker_name: worker_name} do
       path_updates = [
-        %{closed_list: [], final_path: nil, open_list: [%PathDemo.Astar.Node{position: [2, 2], f: 40, g: 0, h: 40, parent: [2, 2]}]},
-        %{closed_list: [%PathDemo.Astar.Node{position: [2, 2], f: 40, g: 0, h: 40, parent: [2, 2]}], final_path: nil, open_list: [%PathDemo.Astar.Node{position: [1, 1], f: 74, g: 14, h: 60, parent: [2, 2]}, %PathDemo.Astar.Node{position: [2, 1], f: 60, g: 10, h: 50, parent: [2, 2]}, %PathDemo.Astar.Node{position: [3, 1], f: 54, g: 14, h: 40, parent: [2, 2]}, %PathDemo.Astar.Node{position: [1, 2], f: 60, g: 10, h: 50, parent: [2, 2]}, %PathDemo.Astar.Node{position: [3, 2], f: 40, g: 10, h: 30, parent: [2, 2]}, %PathDemo.Astar.Node{position: [1, 3], f: 54, g: 14, h: 40, parent: [2, 2]}]},
-        %{closed_list: [%PathDemo.Astar.Node{position: [2, 2], f: 40, g: 0, h: 40, parent: [2, 2]}, %PathDemo.Astar.Node{position: [3, 2], f: 40, g: 10, h: 30, parent: [2, 2]}], final_path: nil, open_list: [%PathDemo.Astar.Node{position: [1, 1], f: 74, g: 14, h: 60, parent: [2, 2]}, %PathDemo.Astar.Node{position: [2, 1], f: 60, g: 10, h: 50, parent: [2, 2]}, %PathDemo.Astar.Node{position: [3, 1], f: 54, g: 14, h: 40, parent: [2, 2]}, %PathDemo.Astar.Node{position: [1, 2], f: 60, g: 10, h: 50, parent: [2, 2]}, %PathDemo.Astar.Node{position: [1, 3], f: 54, g: 14, h: 40, parent: [2, 2]}]},
-        %{closed_list: [%PathDemo.Astar.Node{position: [2, 2], f: 40, g: 0, h: 40, parent: [2, 2]}, %PathDemo.Astar.Node{position: [3, 2], f: 40, g: 10, h: 30, parent: [2, 2]}, %PathDemo.Astar.Node{position: [3, 1], f: 54, g: 14, h: 40, parent: [2, 2]}], final_path: nil, open_list: [%PathDemo.Astar.Node{position: [1, 1], f: 74, g: 14, h: 60, parent: [2, 2]}, %PathDemo.Astar.Node{position: [2, 1], f: 60, g: 10, h: 50, parent: [2, 2]}, %PathDemo.Astar.Node{position: [1, 2], f: 60, g: 10, h: 50, parent: [2, 2]}, %PathDemo.Astar.Node{position: [1, 3], f: 54, g: 14, h: 40, parent: [2, 2]}, %PathDemo.Astar.Node{position: [2, 0], f: 74, g: 14, h: 60, parent: [3, 1]}, %PathDemo.Astar.Node{position: [3, 0], f: 60, g: 10, h: 50, parent: [3, 1]}, %PathDemo.Astar.Node{position: [4, 0], f: 54, g: 14, h: 40, parent: [3, 1]}]},
-        %{closed_list: [%PathDemo.Astar.Node{position: [2, 2], f: 40, g: 0, h: 40, parent: [2, 2]}, %PathDemo.Astar.Node{position: [3, 2], f: 40, g: 10, h: 30, parent: [2, 2]}, %PathDemo.Astar.Node{position: [3, 1], f: 54, g: 14, h: 40, parent: [2, 2]}, %PathDemo.Astar.Node{position: [1, 3], f: 54, g: 14, h: 40, parent: [2, 2]}], final_path: nil, open_list: [%PathDemo.Astar.Node{position: [1, 1], f: 74, g: 14, h: 60, parent: [2, 2]}, %PathDemo.Astar.Node{position: [2, 1], f: 60, g: 10, h: 50, parent: [2, 2]}, %PathDemo.Astar.Node{position: [1, 2], f: 60, g: 10, h: 50, parent: [2, 2]}, %PathDemo.Astar.Node{position: [2, 0], f: 74, g: 14, h: 60, parent: [3, 1]}, %PathDemo.Astar.Node{position: [3, 0], f: 60, g: 10, h: 50, parent: [3, 1]}, %PathDemo.Astar.Node{position: [4, 0], f: 54, g: 14, h: 40, parent: [3, 1]}, %PathDemo.Astar.Node{position: [0, 2], f: 74, g: 14, h: 60, parent: [1, 3]}, %PathDemo.Astar.Node{position: [0, 3], f: 60, g: 10, h: 50, parent: [1, 3]}, %PathDemo.Astar.Node{position: [0, 4], f: 54, g: 14, h: 40, parent: [1, 3]}, %PathDemo.Astar.Node{position: [1, 4], f: 40, g: 10, h: 30, parent: [1, 3]}, %PathDemo.Astar.Node{position: [2, 4], f: 34, g: 14, h: 20, parent: [1, 3]}]},
-        %{closed_list: [%PathDemo.Astar.Node{position: [2, 2], f: 40, g: 0, h: 40, parent: [2, 2]}, %PathDemo.Astar.Node{position: [3, 2], f: 40, g: 10, h: 30, parent: [2, 2]}, %PathDemo.Astar.Node{position: [3, 1], f: 54, g: 14, h: 40, parent: [2, 2]}, %PathDemo.Astar.Node{position: [1, 3], f: 54, g: 14, h: 40, parent: [2, 2]}, %PathDemo.Astar.Node{position: [2, 4], f: 34, g: 14, h: 20, parent: [1, 3]}], final_path: nil, open_list: [%PathDemo.Astar.Node{position: [1, 1], f: 74, g: 14, h: 60, parent: [2, 2]}, %PathDemo.Astar.Node{position: [2, 1], f: 60, g: 10, h: 50, parent: [2, 2]}, %PathDemo.Astar.Node{position: [1, 2], f: 60, g: 10, h: 50, parent: [2, 2]}, %PathDemo.Astar.Node{position: [2, 0], f: 74, g: 14, h: 60, parent: [3, 1]}, %PathDemo.Astar.Node{position: [3, 0], f: 60, g: 10, h: 50, parent: [3, 1]}, %PathDemo.Astar.Node{position: [4, 0], f: 54, g: 14, h: 40, parent: [3, 1]}, %PathDemo.Astar.Node{position: [0, 2], f: 74, g: 14, h: 60, parent: [1, 3]}, %PathDemo.Astar.Node{position: [0, 3], f: 60, g: 10, h: 50, parent: [1, 3]}, %PathDemo.Astar.Node{position: [0, 4], f: 54, g: 14, h: 40, parent: [1, 3]}, %PathDemo.Astar.Node{position: [1, 4], f: 40, g: 10, h: 30, parent: [1, 3]}, %PathDemo.Astar.Node{position: [3, 4], f: 20, g: 10, h: 10, parent: [2, 4]}]},
-        %{closed_list: [%PathDemo.Astar.Node{position: [2, 2], f: 40, g: 0, h: 40, parent: [2, 2]}, %PathDemo.Astar.Node{position: [3, 2], f: 40, g: 10, h: 30, parent: [2, 2]}, %PathDemo.Astar.Node{position: [3, 1], f: 54, g: 14, h: 40, parent: [2, 2]}, %PathDemo.Astar.Node{position: [1, 3], f: 54, g: 14, h: 40, parent: [2, 2]}, %PathDemo.Astar.Node{position: [2, 4], f: 34, g: 14, h: 20, parent: [1, 3]}, %PathDemo.Astar.Node{position: [3, 4], f: 20, g: 10, h: 10, parent: [2, 4]}], final_path: nil, open_list: [%PathDemo.Astar.Node{position: [1, 1], f: 74, g: 14, h: 60, parent: [2, 2]}, %PathDemo.Astar.Node{position: [2, 1], f: 60, g: 10, h: 50, parent: [2, 2]}, %PathDemo.Astar.Node{position: [1, 2], f: 60, g: 10, h: 50, parent: [2, 2]}, %PathDemo.Astar.Node{position: [2, 0], f: 74, g: 14, h: 60, parent: [3, 1]}, %PathDemo.Astar.Node{position: [3, 0], f: 60, g: 10, h: 50, parent: [3, 1]}, %PathDemo.Astar.Node{position: [4, 0], f: 54, g: 14, h: 40, parent: [3, 1]}, %PathDemo.Astar.Node{position: [0, 2], f: 74, g: 14, h: 60, parent: [1, 3]}, %PathDemo.Astar.Node{position: [0, 3], f: 60, g: 10, h: 50, parent: [1, 3]}, %PathDemo.Astar.Node{position: [0, 4], f: 54, g: 14, h: 40, parent: [1, 3]}, %PathDemo.Astar.Node{position: [1, 4], f: 40, g: 10, h: 30, parent: [1, 3]}, %PathDemo.Astar.Node{position: [4, 4], f: 10, g: 10, h: 0, parent: [3, 4]}]},
-        %{closed_list: [%PathDemo.Astar.Node{position: [2, 2], f: 40, g: 0, h: 40, parent: [2, 2]}, %PathDemo.Astar.Node{position: [3, 2], f: 40, g: 10, h: 30, parent: [2, 2]}, %PathDemo.Astar.Node{position: [3, 1], f: 54, g: 14, h: 40, parent: [2, 2]}, %PathDemo.Astar.Node{position: [1, 3], f: 54, g: 14, h: 40, parent: [2, 2]}, %PathDemo.Astar.Node{position: [2, 4], f: 34, g: 14, h: 20, parent: [1, 3]}, %PathDemo.Astar.Node{position: [3, 4], f: 20, g: 10, h: 10, parent: [2, 4]}, %PathDemo.Astar.Node{position: [4, 4], f: 10, g: 10, h: 0, parent: [3, 4]}], final_path: [%PathDemo.Astar.Node{position: [2, 2], f: 40, g: 0, h: 40, parent: [2, 2]}, %PathDemo.Astar.Node{position: [1, 3], f: 54, g: 14, h: 40, parent: [2, 2]}, %PathDemo.Astar.Node{position: [2, 4], f: 34, g: 14, h: 20, parent: [1, 3]}, %PathDemo.Astar.Node{position: [3, 4], f: 20, g: 10, h: 10, parent: [2, 4]}, %PathDemo.Astar.Node{position: [4, 4], f: 10, g: 10, h: 0, parent: [3, 4]}], open_list: [%PathDemo.Astar.Node{position: [1, 1], f: 74, g: 14, h: 60, parent: [2, 2]}, %PathDemo.Astar.Node{position: [2, 1], f: 60, g: 10, h: 50, parent: [2, 2]}, %PathDemo.Astar.Node{position: [1, 2], f: 60, g: 10, h: 50, parent: [2, 2]}, %PathDemo.Astar.Node{position: [2, 0], f: 74, g: 14, h: 60, parent: [3, 1]}, %PathDemo.Astar.Node{position: [3, 0], f: 60, g: 10, h: 50, parent: [3, 1]}, %PathDemo.Astar.Node{position: [4, 0], f: 54, g: 14, h: 40, parent: [3, 1]}, %PathDemo.Astar.Node{position: [0, 2], f: 74, g: 14, h: 60, parent: [1, 3]}, %PathDemo.Astar.Node{position: [0, 3], f: 60, g: 10, h: 50, parent: [1, 3]}, %PathDemo.Astar.Node{position: [0, 4], f: 54, g: 14, h: 40, parent: [1, 3]}, %PathDemo.Astar.Node{position: [1, 4], f: 40, g: 10, h: 30, parent: [1, 3]}]},
+        %{
+          closed_list: [],
+          final_path: nil,
+          open_list: [%PathDemo.Astar.Node{position: [2, 2], f: 40, g: 0, h: 40, parent: [2, 2]}]
+        },
+        %{
+          closed_list: [
+            %PathDemo.Astar.Node{position: [2, 2], f: 40, g: 0, h: 40, parent: [2, 2]}
+          ],
+          final_path: nil,
+          open_list: [
+            %PathDemo.Astar.Node{position: [1, 1], f: 74, g: 14, h: 60, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [2, 1], f: 60, g: 10, h: 50, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [3, 1], f: 54, g: 14, h: 40, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [1, 2], f: 60, g: 10, h: 50, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [3, 2], f: 40, g: 10, h: 30, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [1, 3], f: 54, g: 14, h: 40, parent: [2, 2]}
+          ]
+        },
+        %{
+          closed_list: [
+            %PathDemo.Astar.Node{position: [2, 2], f: 40, g: 0, h: 40, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [3, 2], f: 40, g: 10, h: 30, parent: [2, 2]}
+          ],
+          final_path: nil,
+          open_list: [
+            %PathDemo.Astar.Node{position: [1, 1], f: 74, g: 14, h: 60, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [2, 1], f: 60, g: 10, h: 50, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [3, 1], f: 54, g: 14, h: 40, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [1, 2], f: 60, g: 10, h: 50, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [1, 3], f: 54, g: 14, h: 40, parent: [2, 2]}
+          ]
+        },
+        %{
+          closed_list: [
+            %PathDemo.Astar.Node{position: [2, 2], f: 40, g: 0, h: 40, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [3, 2], f: 40, g: 10, h: 30, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [3, 1], f: 54, g: 14, h: 40, parent: [2, 2]}
+          ],
+          final_path: nil,
+          open_list: [
+            %PathDemo.Astar.Node{position: [1, 1], f: 74, g: 14, h: 60, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [2, 1], f: 60, g: 10, h: 50, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [1, 2], f: 60, g: 10, h: 50, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [1, 3], f: 54, g: 14, h: 40, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [2, 0], f: 74, g: 14, h: 60, parent: [3, 1]},
+            %PathDemo.Astar.Node{position: [3, 0], f: 60, g: 10, h: 50, parent: [3, 1]},
+            %PathDemo.Astar.Node{position: [4, 0], f: 54, g: 14, h: 40, parent: [3, 1]}
+          ]
+        },
+        %{
+          closed_list: [
+            %PathDemo.Astar.Node{position: [2, 2], f: 40, g: 0, h: 40, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [3, 2], f: 40, g: 10, h: 30, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [3, 1], f: 54, g: 14, h: 40, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [1, 3], f: 54, g: 14, h: 40, parent: [2, 2]}
+          ],
+          final_path: nil,
+          open_list: [
+            %PathDemo.Astar.Node{position: [1, 1], f: 74, g: 14, h: 60, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [2, 1], f: 60, g: 10, h: 50, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [1, 2], f: 60, g: 10, h: 50, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [2, 0], f: 74, g: 14, h: 60, parent: [3, 1]},
+            %PathDemo.Astar.Node{position: [3, 0], f: 60, g: 10, h: 50, parent: [3, 1]},
+            %PathDemo.Astar.Node{position: [4, 0], f: 54, g: 14, h: 40, parent: [3, 1]},
+            %PathDemo.Astar.Node{position: [0, 2], f: 74, g: 14, h: 60, parent: [1, 3]},
+            %PathDemo.Astar.Node{position: [0, 3], f: 60, g: 10, h: 50, parent: [1, 3]},
+            %PathDemo.Astar.Node{position: [0, 4], f: 54, g: 14, h: 40, parent: [1, 3]},
+            %PathDemo.Astar.Node{position: [1, 4], f: 40, g: 10, h: 30, parent: [1, 3]},
+            %PathDemo.Astar.Node{position: [2, 4], f: 34, g: 14, h: 20, parent: [1, 3]}
+          ]
+        },
+        %{
+          closed_list: [
+            %PathDemo.Astar.Node{position: [2, 2], f: 40, g: 0, h: 40, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [3, 2], f: 40, g: 10, h: 30, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [3, 1], f: 54, g: 14, h: 40, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [1, 3], f: 54, g: 14, h: 40, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [2, 4], f: 34, g: 14, h: 20, parent: [1, 3]}
+          ],
+          final_path: nil,
+          open_list: [
+            %PathDemo.Astar.Node{position: [1, 1], f: 74, g: 14, h: 60, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [2, 1], f: 60, g: 10, h: 50, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [1, 2], f: 60, g: 10, h: 50, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [2, 0], f: 74, g: 14, h: 60, parent: [3, 1]},
+            %PathDemo.Astar.Node{position: [3, 0], f: 60, g: 10, h: 50, parent: [3, 1]},
+            %PathDemo.Astar.Node{position: [4, 0], f: 54, g: 14, h: 40, parent: [3, 1]},
+            %PathDemo.Astar.Node{position: [0, 2], f: 74, g: 14, h: 60, parent: [1, 3]},
+            %PathDemo.Astar.Node{position: [0, 3], f: 60, g: 10, h: 50, parent: [1, 3]},
+            %PathDemo.Astar.Node{position: [0, 4], f: 54, g: 14, h: 40, parent: [1, 3]},
+            %PathDemo.Astar.Node{position: [1, 4], f: 40, g: 10, h: 30, parent: [1, 3]},
+            %PathDemo.Astar.Node{position: [3, 4], f: 20, g: 10, h: 10, parent: [2, 4]}
+          ]
+        },
+        %{
+          closed_list: [
+            %PathDemo.Astar.Node{position: [2, 2], f: 40, g: 0, h: 40, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [3, 2], f: 40, g: 10, h: 30, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [3, 1], f: 54, g: 14, h: 40, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [1, 3], f: 54, g: 14, h: 40, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [2, 4], f: 34, g: 14, h: 20, parent: [1, 3]},
+            %PathDemo.Astar.Node{position: [3, 4], f: 20, g: 10, h: 10, parent: [2, 4]}
+          ],
+          final_path: nil,
+          open_list: [
+            %PathDemo.Astar.Node{position: [1, 1], f: 74, g: 14, h: 60, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [2, 1], f: 60, g: 10, h: 50, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [1, 2], f: 60, g: 10, h: 50, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [2, 0], f: 74, g: 14, h: 60, parent: [3, 1]},
+            %PathDemo.Astar.Node{position: [3, 0], f: 60, g: 10, h: 50, parent: [3, 1]},
+            %PathDemo.Astar.Node{position: [4, 0], f: 54, g: 14, h: 40, parent: [3, 1]},
+            %PathDemo.Astar.Node{position: [0, 2], f: 74, g: 14, h: 60, parent: [1, 3]},
+            %PathDemo.Astar.Node{position: [0, 3], f: 60, g: 10, h: 50, parent: [1, 3]},
+            %PathDemo.Astar.Node{position: [0, 4], f: 54, g: 14, h: 40, parent: [1, 3]},
+            %PathDemo.Astar.Node{position: [1, 4], f: 40, g: 10, h: 30, parent: [1, 3]},
+            %PathDemo.Astar.Node{position: [4, 4], f: 10, g: 10, h: 0, parent: [3, 4]}
+          ]
+        },
+        %{
+          closed_list: [
+            %PathDemo.Astar.Node{position: [2, 2], f: 40, g: 0, h: 40, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [3, 2], f: 40, g: 10, h: 30, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [3, 1], f: 54, g: 14, h: 40, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [1, 3], f: 54, g: 14, h: 40, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [2, 4], f: 34, g: 14, h: 20, parent: [1, 3]},
+            %PathDemo.Astar.Node{position: [3, 4], f: 20, g: 10, h: 10, parent: [2, 4]},
+            %PathDemo.Astar.Node{position: [4, 4], f: 10, g: 10, h: 0, parent: [3, 4]}
+          ],
+          final_path: [
+            %PathDemo.Astar.Node{position: [2, 2], f: 40, g: 0, h: 40, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [1, 3], f: 54, g: 14, h: 40, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [2, 4], f: 34, g: 14, h: 20, parent: [1, 3]},
+            %PathDemo.Astar.Node{position: [3, 4], f: 20, g: 10, h: 10, parent: [2, 4]},
+            %PathDemo.Astar.Node{position: [4, 4], f: 10, g: 10, h: 0, parent: [3, 4]}
+          ],
+          open_list: [
+            %PathDemo.Astar.Node{position: [1, 1], f: 74, g: 14, h: 60, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [2, 1], f: 60, g: 10, h: 50, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [1, 2], f: 60, g: 10, h: 50, parent: [2, 2]},
+            %PathDemo.Astar.Node{position: [2, 0], f: 74, g: 14, h: 60, parent: [3, 1]},
+            %PathDemo.Astar.Node{position: [3, 0], f: 60, g: 10, h: 50, parent: [3, 1]},
+            %PathDemo.Astar.Node{position: [4, 0], f: 54, g: 14, h: 40, parent: [3, 1]},
+            %PathDemo.Astar.Node{position: [0, 2], f: 74, g: 14, h: 60, parent: [1, 3]},
+            %PathDemo.Astar.Node{position: [0, 3], f: 60, g: 10, h: 50, parent: [1, 3]},
+            %PathDemo.Astar.Node{position: [0, 4], f: 54, g: 14, h: 40, parent: [1, 3]},
+            %PathDemo.Astar.Node{position: [1, 4], f: 40, g: 10, h: 30, parent: [1, 3]}
+          ]
+        }
       ]
 
-      final_path = [%PathDemo.Astar.Node{position: [2, 2], f: 40, g: 0, h: 40, parent: [2, 2]}, %PathDemo.Astar.Node{position: [1, 3], f: 54, g: 14, h: 40, parent: [2, 2]}, %PathDemo.Astar.Node{position: [2, 4], f: 34, g: 14, h: 20, parent: [1, 3]}, %PathDemo.Astar.Node{position: [3, 4], f: 20, g: 10, h: 10, parent: [2, 4]}, %PathDemo.Astar.Node{position: [4, 4], f: 10, g: 10, h: 0, parent: [3, 4]}]
+      final_path = [
+        %PathDemo.Astar.Node{position: [2, 2], f: 40, g: 0, h: 40, parent: [2, 2]},
+        %PathDemo.Astar.Node{position: [1, 3], f: 54, g: 14, h: 40, parent: [2, 2]},
+        %PathDemo.Astar.Node{position: [2, 4], f: 34, g: 14, h: 20, parent: [1, 3]},
+        %PathDemo.Astar.Node{position: [3, 4], f: 20, g: 10, h: 10, parent: [2, 4]},
+        %PathDemo.Astar.Node{position: [4, 4], f: 10, g: 10, h: 0, parent: [3, 4]}
+      ]
 
       tile_map = SmallMapGenerator.build()
 
@@ -74,10 +221,7 @@ defmodule PathDemo.AstarTest do
       |> Kernel.==(final_path)
       |> assert
 
-
-
       # "Moving" to the initial node.
-
 
       :ok = Pathfinder.walk_path(worker_name)
       :ok = Pathfinder.walk_path(worker_name)

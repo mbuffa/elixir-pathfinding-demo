@@ -206,6 +206,7 @@ defmodule PathDemo.Astar do
   end
 
   defp build_final_path(closed_list, origin, current, path)
+
   defp build_final_path(_closed_list, [ox, oy], %{position: [ox, oy]}, final_path) do
     Logger.debug("[ASTAR] Finished building final path")
     final_path
