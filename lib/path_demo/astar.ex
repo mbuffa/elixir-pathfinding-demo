@@ -118,7 +118,6 @@ defmodule PathDemo.Astar do
     new_closed_list = closed_list ++ [current]
 
     new_path = %{state.path | open_list: new_open_list, closed_list: new_closed_list}
-
     state = %{state | path: new_path}
 
     if state.target == current.position do
@@ -143,60 +142,69 @@ defmodule PathDemo.Astar do
          %{path: %{closed_list: closed_list, open_list: open_list}} = state
        ) do
     # We filter our neighbors: we don't want obstacles or nodes in closed_list.
-    neighbors =
-      neighbors_of(tiles, current.position)
-      |> Enum.reject(fn neighbor ->
-        in_closed_list =
-          closed_list
-          |> Enum.any?(fn node -> node.position == neighbor.position end)
-
-        neighbor.type != :clear or in_closed_list
-      end)
+    neighbors = get_filtered_neighbors(tiles, current.position, open_list, closed_list)
 
     Logger.debug("[ASTAR] Rejected invalid neighbors")
 
     # Calculating best F available.
-    shortest_path_available =
-      neighbors
-      |> Enum.map(fn neighbor ->
-        cost_to_enter(current.position, neighbor.position) +
-          manhattan_distance(neighbor.position, state.target)
-      end)
+    most_attractive_neighbor =
+      get_most_attractive_neighbors(neighbors, current.position, state.target)
 
     Logger.debug("[ASTAR] Calculated shortest path available")
 
     # Calculate nodes to add to our open list.
     to_add =
-      Enum.map(neighbors, fn neighbor ->
-        neighbor_in_open_list =
-          open_list
-          |> Enum.any?(fn node -> node.position == neighbor.position end)
-
-        g = cost_to_enter(current.position, neighbor.position)
-        h = manhattan_distance(neighbor.position, state.target)
-        f = g + h
-
-        if f <= shortest_path_available or not neighbor_in_open_list do
-          node = %Node{
-            position: neighbor.position,
-            f: f,
-            g: g,
-            h: h,
-            parent: current.position
-          }
-
-          if not neighbor_in_open_list do
-            node
-          else
-            nil
-          end
-        else
-          nil
-        end
+      neighbors
+      |> Enum.map(fn neighbor ->
+        maybe_make_node_from_neighbor(
+          neighbor,
+          current.position,
+          state.target,
+          most_attractive_neighbor
+        )
       end)
       |> Enum.reject(&is_nil/1)
 
     %{state.path | open_list: open_list ++ to_add}
+  end
+
+  defp get_filtered_neighbors(tiles, current_position, open_list, closed_list) do
+    neighbors_of(tiles, current_position)
+    |> Enum.reject(fn neighbor ->
+      in_open_list = Enum.any?(open_list, fn node -> node.position == neighbor.position end)
+      in_closed_list = Enum.any?(closed_list, fn node -> node.position == neighbor.position end)
+      neighbor.type == :wall or in_open_list or in_closed_list
+    end)
+  end
+
+  defp get_most_attractive_neighbors(tiles, current_position, target) do
+    Enum.map(tiles, fn neighbor ->
+      cost_to_enter(current_position, neighbor.position) +
+        manhattan_distance(neighbor.position, target)
+    end)
+  end
+
+  defp maybe_make_node_from_neighbor(
+         neighbor,
+         current_position,
+         target,
+         most_attractive_neighbor
+       ) do
+    g = cost_to_enter(current_position, neighbor.position)
+    h = manhattan_distance(neighbor.position, target)
+    f = g + h
+
+    if f <= most_attractive_neighbor do
+      %Node{
+        position: neighbor.position,
+        f: f,
+        g: g,
+        h: h,
+        parent: current_position
+      }
+    else
+      nil
+    end
   end
 
   defp build_final_path(closed_list, origin, current, path)
