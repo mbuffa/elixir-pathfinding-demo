@@ -10,10 +10,7 @@ defmodule PathDemo.Astar do
   end
 
   # G
-  def cost_to_enter(position, target) do
-    [x, y] = position
-    [tx, ty] = target
-
+  def cost_to_enter([x, y], [tx, ty]) do
     case abs(x - tx) + abs(y - ty) do
       0 -> 0
       1 -> 10
@@ -22,11 +19,8 @@ defmodule PathDemo.Astar do
   end
 
   # H
-  def manhattan_distance(position, target) do
-    [x, y] = position
-    [tx, ty] = target
-    distance = abs(x - tx) + abs(y - ty)
-    distance * 10
+  def manhattan_distance([x, y], [tx, ty]) do
+    10 * (abs(x - tx) + abs(y - ty))
   end
 
   def tile_at(tiles, position) do
@@ -35,17 +29,13 @@ defmodule PathDemo.Astar do
     |> Enum.find(fn tile -> tile.position == position end)
   end
 
-  def neighbors_of(tiles, position) do
+  def neighbors_of(tiles, [x, y]) do
     tiles
     |> List.flatten()
-    |> Enum.filter(fn tile ->
-      [x, y] = position
-      [tx, ty] = tile.position
-
+    |> Enum.filter(fn %{position: [tx, ty]} ->
       diffx = abs(x - tx)
       diffy = abs(y - ty)
-
-      (diffx == 1 && diffy == 1) or (diffx == 1 && diffy == 0) or (diffy == 1 && diffx == 0)
+      (diffx == 1 && diffy == 1) or (diffx == 1 && diffy == 0) or (diffx == 0 && diffy == 1)
     end)
   end
 
