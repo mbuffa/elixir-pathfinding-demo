@@ -81,32 +81,28 @@ defmodule PathDemo.Astar do
     %{state | path: path}
   end
 
-  # Second handler: We just got the initial node in our open list.
-  def build_path(tiles, %{path: %{open_list: [current], closed_list: closed_list}} = state) do
-    path = %{state.path | closed_list: closed_list ++ [current], open_list: []}
+  # This was implemented initially, but can be safely removed, as it's covered by the following clause.
+  # # Second handler: We just got the initial node in our open list.
+  # def build_path(tiles, %{path: %{open_list: [current], closed_list: closed_list}} = state) do
+  #   path = %{state.path | closed_list: closed_list ++ [current], open_list: []}
+  #   state = %{state | path: path}
 
-    state = %{state | path: path}
-
-    if state.target == current.position do
-      Logger.debug("[ASTAR] Reached destination")
-
-      final_path =
-        build_final_path(
-          closed_list,
-          state.position,
-          closed_list |> List.last(),
-          [current]
-        )
-
-      %{state | path: %{state.path | final_path: final_path}}
-    else
-      state = %{state | path: compute_path(current, tiles, state)}
-
-      Logger.debug("[ASTAR] Added nodes to the open list.")
-
-      state
-    end
-  end
+  #   if state.target == current.position do
+  #     Logger.debug("[ASTAR] Reached destination")
+  #     final_path =
+  #       build_final_path(
+  #         closed_list,
+  #         state.position,
+  #         closed_list |> List.last(),
+  #         [current]
+  #       )
+  #     %{state | path: %{state.path | final_path: final_path}}
+  #   else
+  #     state = %{state | path: compute_path(current, tiles, state)}
+  #     Logger.debug("[ASTAR] Added nodes to the open list.")
+  #     state
+  #   end
+  # end
 
   # Third handler: we have multiple nodes in our open list.
   def build_path(tiles, %{path: %{open_list: open_list, closed_list: closed_list}} = state) do
@@ -137,9 +133,7 @@ defmodule PathDemo.Astar do
 
       %{state | path: %{state.path | final_path: final_path}}
     else
-      state = %{state | path: compute_path(current, tiles, %{state | path: new_path})}
-
-      state
+      %{state | path: compute_path(current, tiles, %{state | path: new_path})}
     end
   end
 
