@@ -137,8 +137,8 @@ defmodule PathDemo.Astar do
     Logger.debug("[ASTAR] Rejected invalid neighbors")
 
     # Calculating best F available.
-    most_attractive_neighbor =
-      get_most_attractive_neighbors(neighbors, current.position, state.target)
+    shortest_path_available =
+      get_shortest_path_available(neighbors, current.position, state.target)
 
     Logger.debug("[ASTAR] Calculated shortest path available")
 
@@ -150,7 +150,7 @@ defmodule PathDemo.Astar do
           neighbor,
           current.position,
           state.target,
-          most_attractive_neighbor
+          shortest_path_available
         )
       end)
       |> Enum.reject(&is_nil/1)
@@ -167,8 +167,10 @@ defmodule PathDemo.Astar do
     end)
   end
 
-  defp get_most_attractive_neighbors(tiles, current_position, target) do
-    Enum.map(tiles, fn neighbor ->
+  defp get_shortest_path_available([], _, _), do: nil
+
+  defp get_shortest_path_available(tiles, current_position, target) do
+    Enum.min_by(tiles, fn neighbor ->
       cost_to_enter(current_position, neighbor.position) +
         manhattan_distance(neighbor.position, target)
     end)
@@ -178,13 +180,13 @@ defmodule PathDemo.Astar do
          neighbor,
          current_position,
          target,
-         most_attractive_neighbor
+         shortest_path_available
        ) do
     g = cost_to_enter(current_position, neighbor.position)
     h = manhattan_distance(neighbor.position, target)
     f = g + h
 
-    if f <= most_attractive_neighbor do
+    if is_nil(shortest_path_available) or f <= shortest_path_available do
       %Node{
         position: neighbor.position,
         f: f,
